@@ -1,0 +1,133 @@
+<html><head><base href="https://behringer-escape-plan.com">
+<title>The Behringer Escape Plan</title>
+<style>
+  body {
+    font-family: 'Courier New', monospace;
+    background-color: #000;
+    color: #0F0;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 {
+    color: #0F0;
+    text-align: center;
+    font-size: 2.5em;
+    text-shadow: 0 0 10px #0F0;
+  }
+  .ascii-art {
+    font-family: monospace;
+    white-space: pre;
+    text-align: center;
+    font-size: 0.8em;
+    margin: 20px 0;
+  }
+  .blink {
+    animation: blink 1s steps(1, end) infinite;
+  }
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .menu {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+  }
+  .menu a {
+    color: #0F0;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #0F0;
+  }
+  .menu a:hover {
+    background-color: #0F0;
+    color: #000;
+  }
+  .content {
+    border: 1px solid #0F0;
+    padding: 20px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>The Behringer Escape Plan</h1>
+  
+  <div class="ascii-art">
+     _____     _     _                       
+    | __  |___| |_ _|_|___ ___ ___ ___       
+    | __ -| -_|   | | |   | . | -_|  _|      
+    |_____|___|_|_|_|_|_|_|_  |___|_|        
+                          |___|              
+     _____                           _____   
+    |   __|___ ___ ___ ___ ___    __|  _  |  
+    |   __|_ -|  _| .'| . | -_|  |  |   __|  
+    |_____|___|___|__,|  _|___|  |__|__|     
+                     |_|                     
+  </div>
+  
+  <div class="menu">
+    <a href="#mission">Mission</a>
+    <a href="#gear">Gear</a>
+    <a href="#escape-routes">Escape Routes</a>
+    <a href="#contact">Contact</a>
+  </div>
+  
+  <div class="content">
+    <h2 id="mission">Mission</h2>
+    <p>Welcome, agent. Your mission, should you choose to accept it, is to infiltrate the Behringer compound and liberate the suppressed synth designs. Our intelligence suggests that Behringer has been reverse-engineering classic synthesizers without permission, threatening the diversity of the music tech industry.</p>
+    
+    <h2 id="gear">Gear</h2>
+    <ul>
+      <li>Stealth Oscillator Detector (S.O.D.)</li>
+      <li>Filter Frequency Disruptor (FFD)</li>
+      <li>ADSR Lockpick Set</li>
+      <li>Patch Cable Grappling Hook</li>
+      <li>CV/Gate Signal Jammer</li>
+    </ul>
+    
+    <h2 id="escape-routes">Escape Routes</h2>
+    <p>We've identified three potential escape routes:</p>
+    <ol>
+      <li>The Moog Tunnel: A secret passage disguised as a Moog Modular system.</li>
+      <li>The Roland Rooftop: Accessible via a TR-808 rhythm pattern unlock sequence.</li>
+      <li>The Yamaha Underground: Enter through a DX7 preset library and exit via a CS-80 emulation chamber.</li>
+    </ol>
+    
+    <h2 id="contact">Contact</h2>
+    <p>For emergencies, contact Agent Analog at <span class="blink">0118 999 881 999 119 725 3</span></p>
+  </div>
+  
+  <p><small>This message will self-destruct in 5... 4... 3...</small></p>
+</div>
+
+<script>
+  // Simulating a "hacking" effect
+  function hackEffect(element) {
+    const original = element.innerText;
+    const hackedChars = '!@#$%^&*()_+-={}[]|:;"<>,.?/~`';
+    
+    setInterval(() => {
+      element.innerText = original.split('').map(char => 
+        Math.random() > 0.9 ? hackedChars[Math.floor(Math.random() * hackedChars.length)] : char
+      ).join('');
+    }, 50);
+    
+    setTimeout(() => {
+      element.innerText = original;
+    }, 1000);
+  }
+  
+  document.querySelectorAll('h2').forEach(h2 => {
+    h2.addEventListener('mouseover', () => hackEffect(h2));
+  });
+</script>
+
+</body></html>

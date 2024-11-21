@@ -1,0 +1,175 @@
+<html><head><base href="https://behringerescapeplan.com/ascii%20easter%20eggs">
+  <title>Behringer Escape Plan - ASCII Easter Eggs</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    #ascii-container {
+      text-align: center;
+      white-space: pre;
+      font-size: 10px;
+      line-height: 1;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    button {
+      background: #0f0;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+    }
+    #info-panel {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 255, 0, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="ascii-container"></div>
+  
+  <div id="controls">
+    <button onclick="showEasterEgg('synth')">Synth</button>
+    <button onclick="showEasterEgg('cat')">Cat</button>
+    <button onclick="showEasterEgg('patch')">Patch</button>
+  </div>
+
+  <div id="info-panel">
+    <h2>ASCII Easter Eggs</h2>
+    <p>Hidden Messages: <span id="hidden-messages">0</span></p>
+    <p>Egg Complexity: <span id="egg-complexity">Low</span></p>
+  </div>
+
+  <script>
+    const asciiArt = {
+      synth: `
+   _____________________
+  |  _________________  |
+  | | Behringer       | |
+  | |  DeepMind 12    | |
+  | |_________________| |
+  |  ___ ___ ___   ___  |
+  | | 7 | 8 | 9 | | + | |
+  | |___|___|___| |___| |
+  | | 4 | 5 | 6 | | - | |
+  | |___|___|___| |___| |
+  | | 1 | 2 | 3 | | x | |
+  | |___|___|___| |___| |
+  | | . | 0 | = | | / | |
+  | |___|___|___| |___| |
+  |_____________________|
+`,
+      cat: `
+   /\\     /\\
+  {  \`---'  }
+  {  O   O  }
+  ~~>  V  <~~
+   \\  \\|/  /
+    \`-----'__
+    /     \\  \`^\\_
+   {       }\\ |\\_\\_   W
+   |  \\_/  |/ /  \\_\\_( )
+    \\__/  /(_E     \\__/
+      (  /
+       MM
+`,
+      patch: `
+  +---+   +---+   +---+
+  |VCO|-->|VCF|-->|VCA|
+  +---+   +---+   +---+
+    |       ^       ^
+    |       |       |
+  +---+   +---+   +---+
+  |LFO|-->|ENV|   |ENV|
+  +---+   +---+   +---+
+`
+    };
+
+    let hiddenMessages = 0;
+    let eggComplexity = 'Low';
+
+    function showEasterEgg(type) {
+      const container = document.getElementById('ascii-container');
+      container.innerHTML = asciiArt[type];
+      
+      // Easter egg logic
+      hiddenMessages++;
+      if (hiddenMessages > 5) {
+        eggComplexity = 'Medium';
+      }
+      if (hiddenMessages > 10) {
+        eggComplexity = 'High';
+      }
+      
+      updateInfoPanel();
+      playEasterEggSound(type);
+      
+      // Super secret easter egg
+      if (hiddenMessages === 12) {
+        setTimeout(() => {
+          container.innerHTML += "\n\nCONGRATULATIONS! You've found the secret patch bay!";
+        }, 1000);
+      }
+    }
+
+    function updateInfoPanel() {
+      document.getElementById('hidden-messages').textContent = hiddenMessages;
+      document.getElementById('egg-complexity').textContent = eggComplexity;
+    }
+
+    function playEasterEggSound(type) {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      switch(type) {
+        case 'synth':
+          oscillator.type = 'sawtooth';
+          oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+          break;
+        case 'cat':
+          oscillator.type = 'sine';
+          oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(660, audioContext.currentTime + 0.1);
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+          gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3);
+          break;
+        case 'patch':
+          oscillator.type = 'square';
+          oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
+          oscillator.frequency.linearRampToValueAtTime(440, audioContext.currentTime + 0.2);
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+          gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.2);
+          break;
+      }
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.5);
+    }
+
+    // Initialize with synth ASCII art
+    showEasterEgg('synth');
+  </script>
+</body></html>

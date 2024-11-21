@@ -1,0 +1,44 @@
+<html><head><base href="https://behringerescapeplan.com/" /><title>Behringer Escape Plan - Infinite ASCII Art 3D World</title><style>body{background:#000;color:#0f0;font-family:monospace;overflow:hidden}#world{white-space:pre;font-size:8px;line-height:8px}#controls{position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.7);padding:10px;border-radius:5px}input,button{background:#0f0;color:#000;border:none;padding:5px;margin:2px}@keyframes pulse{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}</style></head><body>
+<div id="world"></div>
+<div id="controls">
+  <form method="GET" action="/navigate">
+    <input type="text" name="direction" placeholder="Enter direction (N/S/E/W/U/D)">
+    <button type="submit">Move</button>
+  </form>
+</div>
+<script>
+const chars = ' .:-=+*#%@';
+const width = 80;
+const height = 40;
+let z = 0;
+
+function generateWorld() {
+  let world = '';
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      let dist = Math.sqrt(Math.pow(x - width/2, 2) + Math.pow(y - height/2, 2) + Math.pow(z, 2));
+      let index = Math.floor(dist % chars.length);
+      world += chars[index];
+    }
+    world += '\n';
+  }
+  return world;
+}
+
+function updateWorld() {
+  document.getElementById('world').textContent = generateWorld();
+  z += 0.1;
+  requestAnimationFrame(updateWorld);
+}
+
+updateWorld();
+</script>
+<nav>
+  <a href="https://behringerescapeplan.com/about">About the Escape</a> |
+  <a href="https://behringerescapeplan.com/multiverse">Multiverse Explorer</a> |
+  <a href="https://behringerescapeplan.com/ascii-art-generator">Create Your Own ASCII World</a>
+</nav>
+<footer style="position:fixed;bottom:0;right:10px;color:#0f0;font-size:12px;animation:pulse 2s infinite;">
+  Exploring fractal dimension 2.7182818284590452353602874713527
+</footer>
+</body></html>

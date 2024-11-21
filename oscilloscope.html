@@ -1,0 +1,140 @@
+<html><head><base href="https://behringerescapeplan.com/signals/oscilloscope">
+<title>Behringer Escape Plan - Oscilloscope</title>
+<style>
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.oscilloscope {
+  width: 600px;
+  height: 400px;
+  border: 2px solid #00ff00;
+  position: relative;
+  overflow: hidden;
+}
+.grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(to right, rgba(0,255,0,0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,255,0,0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+#waveform {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+button {
+  background: #003300;
+  color: #00ff00;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.message {
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<h1>Signal Oscilloscope</h1>
+
+<div class="oscilloscope">
+  <div class="grid"></div>
+  <canvas id="waveform" width="600" height="400"></canvas>
+</div>
+
+<div class="controls">
+  <button onclick="changeWaveform('sine')">Sine Wave</button>
+  <button onclick="changeWaveform('square')">Square Wave</button>
+  <button onclick="changeWaveform('sawtooth')">Sawtooth Wave</button>
+  <button onclick="changeWaveform('triangle')">Triangle Wave</button>
+  <button onclick="changeWaveform('noise')">Noise</button>
+  <button onclick="changeWaveform('secret')">Secret Signal</button>
+</div>
+
+<div class="message">Adjust the oscilloscope to reveal the hidden message.</div>
+
+<script>
+const canvas = document.getElementById('waveform');
+const ctx = canvas.getContext('2d');
+let currentWaveform = 'sine';
+let phase = 0;
+
+function drawWaveform() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.strokeStyle = '#00ff00';
+  ctx.lineWidth = 2;
+
+  for (let x = 0; x < canvas.width; x++) {
+    let y = 0;
+    switch (currentWaveform) {
+      case 'sine':
+        y = Math.sin(x * 0.05 + phase) * 100 + 200;
+        break;
+      case 'square':
+        y = Math.sin(x * 0.05 + phase) > 0 ? 100 : 300;
+        break;
+      case 'sawtooth':
+        y = ((x + phase * 20) % 100) * 2 + 100;
+        break;
+      case 'triangle':
+        y = Math.abs(((x + phase * 20) % 200) - 100) * 2 + 100;
+        break;
+      case 'noise':
+        y = Math.random() * 200 + 100;
+        break;
+      case 'secret':
+        // Generate a secret pattern here
+        y = 200 + Math.sin(x * 0.05 + phase) * 50 + Math.sin(x * 0.1 + phase * 2) * 25;
+        break;
+    }
+    if (x === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+  }
+  ctx.stroke();
+
+  phase += 0.1;
+  requestAnimationFrame(drawWaveform);
+}
+
+function changeWaveform(waveform) {
+  currentWaveform = waveform;
+  if (waveform === 'secret') {
+    document.querySelector('.message').textContent = "DECODED: The Behringer will escape at the crescendo.";
+  } else {
+    document.querySelector('.message').textContent = "Adjust the oscilloscope to reveal the hidden message.";
+  }
+}
+
+drawWaveform();
+</script>
+
+<footer>
+  <p><a href="https://behringerescapeplan.com/">Back to Main</a> | <a href="https://behringerescapeplan.com/signals">All Signals</a> | <a href="https://behringerescapeplan.com/countdown">Countdown</a></p>
+</footer>
+
+</body></html>

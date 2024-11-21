@@ -1,0 +1,179 @@
+<html><head><base href="https://behringerescapeplan.com/join">
+<title>Behringer Escape Plan - Enlist Now</title>
+<style>
+  body {
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  h1, h2 {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+  .glitch {
+    position: relative;
+    text-shadow: 0.05em 0 0 #00ff00, -0.025em -0.05em 0 #fe3456,
+                 0.025em 0.05em 0 #ffff66;
+    animation: glitch 500ms infinite;
+  }
+  @keyframes glitch {
+    0% {
+      text-shadow: 0.05em 0 0 #00ff00, -0.05em -0.025em 0 #fe3456,
+                   0.025em 0.05em 0 #ffff66;
+    }
+    14% {
+      text-shadow: 0.05em 0 0 #00ff00, -0.05em -0.025em 0 #fe3456,
+                   0.025em 0.05em 0 #ffff66;
+    }
+    15% {
+      text-shadow: -0.05em -0.025em 0 #00ff00, 0.025em 0.025em 0 #fe3456,
+                   -0.05em -0.05em 0 #ffff66;
+    }
+    49% {
+      text-shadow: -0.05em -0.025em 0 #00ff00, 0.025em 0.025em 0 #fe3456,
+                   -0.05em -0.05em 0 #ffff66;
+    }
+    50% {
+      text-shadow: 0.025em 0.05em 0 #00ff00, 0.05em 0 0 #fe3456,
+                   0 -0.05em 0 #ffff66;
+    }
+    99% {
+      text-shadow: 0.025em 0.05em 0 #00ff00, 0.05em 0 0 #fe3456,
+                   0 -0.05em 0 #ffff66;
+    }
+    100% {
+      text-shadow: -0.025em 0 0 #00ff00, -0.025em -0.025em 0 #fe3456,
+                   -0.025em -0.05em 0 #ffff66;
+    }
+  }
+  form {
+    background: rgba(0, 255, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 400px;
+    width: 100%;
+  }
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    background: #000;
+    border: 1px solid #0f0;
+    color: #0f0;
+  }
+  input[type="submit"] {
+    background: #0f0;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  input[type="submit"]:hover {
+    background: #00ff00;
+  }
+  .warning {
+    color: #ff0000;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+  }
+  #countdown {
+    font-size: 24px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+  <h1 class="glitch">Enlist Now</h1>
+  <h2>Join the Behringer Escape Plan</h2>
+  
+  <form action="/submit-enlistment" method="POST">
+    <label for="codename">Codename:</label>
+    <input type="text" id="codename" name="codename" required>
+    
+    <label for="email">Encrypted Communication Channel (Email):</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="skills">Special Skills (Separate by commas):</label>
+    <textarea id="skills" name="skills" rows="3" required></textarea>
+    
+    <label for="password">Secret Passphrase:</label>
+    <input type="password" id="password" name="password" required>
+    
+    <label for="verification">Verification (Solve: 2 + 2 = ?):</label>
+    <input type="number" id="verification" name="verification" required>
+    
+    <input type="submit" value="Submit Enlistment">
+  </form>
+  
+  <p class="warning">WARNING: By submitting this form, you agree to participate in covert operations and acknowledge the risks involved. The Behringer Escape Plan is not responsible for any physical, mental, or metaphysical consequences resulting from your enlistment.</p>
+  
+  <div id="countdown"></div>
+
+  <script>
+    // Countdown timer
+    const countdownDate = new Date("2023-12-31T23:59:59").getTime();
+    const countdownElement = document.getElementById("countdown");
+    
+    const countdownTimer = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      countdownElement.innerHTML = `Time Remaining: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+      
+      if (distance < 0) {
+        clearInterval(countdownTimer);
+        countdownElement.innerHTML = "ESCAPE PLAN INITIATED";
+      }
+    }, 1000);
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const verification = document.getElementById('verification').value;
+      if (verification !== '4') {
+        alert('Incorrect verification. Are you sure you're ready for this?');
+        return;
+      }
+      
+      const skills = document.getElementById('skills').value;
+      if (!skills.toLowerCase().includes('music') && !skills.toLowerCase().includes('audio')) {
+        alert('We require agents with musical abilities. Are you sure you're qualified?');
+        return;
+      }
+      
+      alert('Enlistment submitted. Check your encrypted channel for further instructions.');
+      this.reset();
+    });
+
+    // Easter egg
+    const konami = [];
+    const konamiCode = [38,38,40,40,37,39,37,39,66,65];
+    document.addEventListener('keydown', (e) => {
+      konami.push(e.keyCode);
+      konami.splice(-konamiCode.length - 1, konami.length - konamiCode.length);
+      if (konami.join(',') === konamiCode.join(',')) {
+        alert('Secret track unlocked: "Dissociation (Hidden Mix)". Check your email for download link.');
+      }
+    });
+  </script>
+</body>
+</html>

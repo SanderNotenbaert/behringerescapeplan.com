@@ -1,0 +1,158 @@
+<html><head><base href="https://behringerescapeplan.com/ascii%20band%20landing%20page%20infinite%20scroll%20ascii%20100%20synth%20variations">
+<title>Behringer Escape Plan - 100 ASCII Synth Variations</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  #scroll-container {
+    position: relative;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+  .ascii-art {
+    font-size: 8px;
+    line-height: 1;
+    white-space: pre;
+  }
+  @media (max-width: 768px) {
+    .ascii-art {
+      font-size: 5px;
+    }
+  }
+  .content {
+    padding: 20px;
+  }
+  a {
+    color: #0f0;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #ff00ff;
+    text-decoration: underline;
+  }
+  .loading {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+  }
+  .glitch {
+    animation: glitch 1s linear infinite;
+  }
+  @keyframes glitch {
+    2%, 64% {
+      transform: translate(2px,0) skew(0deg);
+    }
+    4%, 60% {
+      transform: translate(-2px,0) skew(0deg);
+    }
+    62% {
+      transform: translate(0,0) skew(5deg); 
+    }
+  }
+  .synth {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #0f0;
+  }
+</style>
+</head>
+<body>
+<div id="scroll-container">
+  <div class="content">
+    <pre class="ascii-art glitch">
+ ____  _____ _   _ ____  ___ _   _  ____ _____ ____  
+| __ )| ____| | | |  _ \|_ _| \ | |/ ___| ____|  _ \ 
+|  _ \|  _| | |_| | |_) || ||  \| | |  _|  _| | |_) |
+| |_) | |___|  _  |  _ < | || |\  | |_| | |___|  _ < 
+|____/|_____|_| |_|_| \_\___|_| \_|\____|_____|_| \_\
+ _____ ____   ____    _    ____  _____   ____  _      _    _   _ 
+| ____/ ___| / ___|  / \  |  _ \| ____| |  _ \| |    / \  | \ | |
+|  _| \___ \| |     / _ \ | |_) |  _|   | |_) | |   / _ \ |  \| |
+| |___ ___) | |___ / ___ \|  __/| |___  |  __/| |__/ ___ \| |\  |
+|_____|____/ \____/_/   \_\_|   |_____| |_|   |_____/   \_\_| \_\
+    </pre>
+
+    <h1>Welcome to the 100 ASCII Synth Variations Infinite Scroll</h1>
+
+    <p>Keep scrolling for an endless journey through our mathcore synth madness!</p>
+
+    <h2>Latest Album: "Hundred Synth Harmony"</h2>
+    <pre>
+Tracks:
+1. Centuplicate Oscillation
+2. ASCII Waveform Wizardry
+3. Infinite Patch Bay
+4. Scroll of a Hundred Voltages
+5. Variations on a Sine (Feat. DJ Cosine)
+    </pre>
+
+    <h2>The Synth Explorers:</h2>
+    <pre>
+┌─────────────────────────────────────────────┐
+│ Xero - Vocals/Hyper-Dimensional Synthesis   │
+│ Null - Guitar/Quantum Waveshaping           │
+│ Void - Bass/Black Hole Resonance            │
+│ Glitch - Drums/Temporal Synthesis Loops     │
+└─────────────────────────────────────────────┘
+    </pre>
+  </div>
+  <div id="infinite-content"></div>
+  <div class="loading">Generating more ASCII synths...</div>
+</div>
+
+<script>
+  const infiniteContent = document.getElementById('infinite-content');
+  const scrollContainer = document.getElementById('scroll-container');
+  const loading = document.querySelector('.loading');
+  
+  function generateSynth() {
+    const synthTypes = ['Analog', 'Digital', 'Modular', 'Hybrid', 'Quantum'];
+    const synthShapes = [
+      '   _____________________\n  |  ___________________  |\n  | |                   | |\n  | |  O  O  O  O  O  O | |\n  | | (o)(o)(o)(o)(o)(o)| |\n  | |                   | |\n  |  ~~~~~~~~~~~~~~~~~~~  |\n  |_____________________|',
+      '  ┌─────┐ ┌─────┐ ┌─────┐\n  │ VCO │ │ VCF │ │ VCA │\n  │  o  │ │  o  │ │  o  │\n  │ o o │ │ o o │ │ o o │\n  │o o o│ │o o o│ │o o o│\n  └─────┘ └─────┘ └─────┘',
+      '   ___________________\n  |  _________________  |\n  | | SYNTH           | |\n  | | [][][][][][][][] | |\n  | | [][][][][][][][] | |\n  | |_________________| |\n  |___________________|',
+      '  ╔════╗╔════╗╔════╗╔════╗\n  ║ LFO║║ ENV║║ OSC║║ FLT║\n  ║ oo ║║ oo ║║ oo ║║ oo ║\n  ║o  o║║o  o║║o  o║║o  o║\n  ╚════╝╚════╝╚════╝╚════╝',
+      '  /\\___/\\  ___  /\\___/\\\n {| O O |}{   }{| O O |}\n  \\ ^ ^ /  \\ /  \\ ^ ^ /\n   \\___/    V    \\___/'
+    ];
+    const synthFeatures = ['Oscillator', 'Filter', 'Envelope', 'LFO', 'Sequencer', 'Arpeggiator', 'Reverb', 'Delay'];
+    
+    const type = synthTypes[Math.floor(Math.random() * synthTypes.length)];
+    const shape = synthShapes[Math.floor(Math.random() * synthShapes.length)];
+    const features = Array(3).fill().map(() => synthFeatures[Math.floor(Math.random() * synthFeatures.length)]);
+    
+    return `
+    <div class="synth">
+      <h3>${type} Synth #${Math.floor(Math.random() * 1000)}</h3>
+      <pre>${shape}</pre>
+      <p>Features: ${features.join(', ')}</p>
+    </div>
+    `;
+  }
+
+  function loadMoreContent() {
+    let newContent = '';
+    for (let i = 0; i < 5; i++) {
+      newContent += generateSynth();
+    }
+    infiniteContent.innerHTML += newContent;
+  }
+
+  scrollContainer.addEventListener('scroll', () => {
+    if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 20) {
+      loadMoreContent();
+    }
+  });
+
+  // Initial load
+  loadMoreContent();
+</script>
+</body></html>

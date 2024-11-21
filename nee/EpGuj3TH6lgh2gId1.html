@@ -1,0 +1,161 @@
+<html><head><base href="https://behringerescapeplan.com/signals">
+<title>Behringer Escape Plan - Signal Hub</title>
+<style>
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container {
+  max-width: 800px;
+  width: 100%;
+}
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.signal-card {
+  border: 1px solid #00ff00;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.signal-card:hover {
+  background: #003300;
+  transform: scale(1.05);
+}
+.signal-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+a {
+  color: #00ff00;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+#message-board {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #00ff00;
+  text-align: center;
+}
+#decrypt {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #003300;
+  border: none;
+  color: #00ff00;
+  cursor: pointer;
+}
+footer {
+  margin-top: 30px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Signal Hub</h1>
+    <p>Explore the various signals of the Behringer Escape Plan</p>
+  </header>
+
+  <main>
+    <div class="signal-grid">
+      <a href="https://behringerescapeplan.com/signals/oscilloscope" class="signal-card">
+        <div class="signal-icon">📊</div>
+        <h2>Oscilloscope</h2>
+        <p>Visualize waveforms and decode hidden patterns</p>
+      </a>
+      
+      <a href="https://behringerescapeplan.com/signals/modular" class="signal-card">
+        <div class="signal-icon">🎛️</div>
+        <h2>Modular Synth</h2>
+        <p>Patch your way to the truth</p>
+      </a>
+      
+      <a href="https://behringerescapeplan.com/signals/spectrogram" class="signal-card">
+        <div class="signal-icon">🌈</div>
+        <h2>Spectrogram</h2>
+        <p>Uncover messages hidden in frequency space</p>
+      </a>
+      
+      <a href="https://behringerescapeplan.com/signals/morse" class="signal-card">
+        <div class="signal-icon">📟</div>
+        <h2>Morse Code</h2>
+        <p>Decipher the dots and dashes</p>
+      </a>
+      
+      <a href="https://behringerescapeplan.com/signals/binary" class="signal-card">
+        <div class="signal-icon">🔢</div>
+        <h2>Binary Decoder</h2>
+        <p>Convert binary to reveal hidden messages</p>
+      </a>
+      
+      <a href="https://behringerescapeplan.com/signals/playground" class="signal-card">
+        <div class="signal-icon">🎮</div>
+        <h2>Signal Playground</h2>
+        <p>Experiment with various signal types</p>
+      </a>
+    </div>
+
+    <div id="message-board">
+      <h3>Encrypted Broadcast</h3>
+      <p id="encrypted-message">VGhlIEJlaHJpbmdlciB3aWxsIGVzY2FwZSB0aHJvdWdoIHRoZSBoaWRkZW4gZnJlcXVlbmN5LiBMaXN0ZW4gY2FyZWZ1bGx5.</p>
+      <button id="decrypt">Decrypt Message</button>
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="https://behringerescapeplan.com/">Back to Main</a> | <a href="https://behringerescapeplan.com/countdown">Countdown</a> | <a href="https://behringerescapeplan.com/signals/blog">Signal Blog</a></p>
+  </footer>
+</div>
+
+<script>
+document.getElementById('decrypt').addEventListener('click', function() {
+  const encryptedMessage = document.getElementById('encrypted-message').textContent;
+  const decodedMessage = atob(encryptedMessage);
+  document.getElementById('encrypted-message').textContent = decodedMessage;
+  this.textContent = 'Message Decrypted';
+  this.disabled = true;
+});
+
+// Easter egg: Konami code to reveal additional signal
+let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === konamiCode[konamiIndex]) {
+    konamiIndex++;
+    if (konamiIndex === konamiCode.length) {
+      const newSignal = document.createElement('a');
+      newSignal.href = 'https://behringerescapeplan.com/signals/quantum';
+      newSignal.className = 'signal-card';
+      newSignal.innerHTML = `
+        <div class="signal-icon">🌌</div>
+        <h2>Quantum Signal</h2>
+        <p>Explore signals that exist in multiple states simultaneously</p>
+      `;
+      document.querySelector('.signal-grid').appendChild(newSignal);
+      alert("You've unlocked the secret Quantum Signal! Explore signals that transcend classical limitations.");
+      konamiIndex = 0;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
+</script>
+
+</body></html>

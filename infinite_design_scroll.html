@@ -1,0 +1,223 @@
+<html><head><base href="https://behringerescapeplan.com/ascii%20band%20landing%20page%20infinite%20scroll%20ascii%201001%20synth%20design%20variations">
+<title>Behringer Escape Plan - 1001 ASCII Synth Design Variations</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  #scroll-container {
+    position: relative;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+  .ascii-art {
+    font-size: 8px;
+    line-height: 1;
+    white-space: pre;
+  }
+  @media (max-width: 768px) {
+    .ascii-art {
+      font-size: 5px;
+    }
+  }
+  .content {
+    padding: 20px;
+  }
+  a {
+    color: #0f0;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #ff00ff;
+    text-decoration: underline;
+  }
+  .loading {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+  }
+  .glitch {
+    animation: glitch 1s linear infinite;
+  }
+  @keyframes glitch {
+    2%, 64% {
+      transform: translate(2px,0) skew(0deg);
+    }
+    4%, 60% {
+      transform: translate(-2px,0) skew(0deg);
+    }
+    62% {
+      transform: translate(0,0) skew(5deg); 
+    }
+  }
+  .synth {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #0f0;
+  }
+  #synth-count {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #000;
+    border: 1px solid #0f0;
+    padding: 5px;
+    z-index: 1000;
+  }
+  .synth-design {
+    display: inline-block;
+    margin: 10px;
+    vertical-align: top;
+  }
+</style>
+</head>
+<body>
+<div id="synth-count">Synth Designs: <span id="count">0</span>/1001</div>
+<div id="scroll-container">
+  <div class="content">
+    <pre class="ascii-art glitch">
+ ____  _____ _   _ ____  ___ _   _  ____ _____ ____  
+| __ )| ____| | | |  _ \|_ _| \ | |/ ___| ____|  _ \ 
+|  _ \|  _| | |_| | |_) || ||  \| | |  _|  _| | |_) |
+| |_) | |___|  _  |  _ < | || |\  | |_| | |___|  _ < 
+|____/|_____|_| |_|_| \_\___|_| \_|\____|_____|_| \_\
+ _____ ____   ____    _    ____  _____   ____  _      _    _   _ 
+| ____/ ___| / ___|  / \  |  _ \| ____| |  _ \| |    / \  | \ | |
+|  _| \___ \| |     / _ \ | |_) |  _|   | |_) | |   / _ \ |  \| |
+| |___ ___) | |___ / ___ \|  __/| |___  |  __/| |__/ ___ \| |\  |
+|_____|____/ \____/_/   \_\_|   |_____| |_|   |_____/   \_\_| \_\
+    </pre>
+
+    <h1>Welcome to the 1001 ASCII Synth Design Variations</h1>
+
+    <p>Embark on a journey through 1001 nights of synth design madness!</p>
+
+    <h2>Latest Album: "The Infinite Patch Bay"</h2>
+    <pre>
+Tracks:
+1. Overture in C++ Major
+2. The Ballad of Spaghetti Cables
+3. Polyphonic Dreams (feat. MC Firmware)
+4. Dancing on the Edge of Feedback
+5. Outro in Binary
+    </pre>
+
+    <h2>The Synth Design Team:</h2>
+    <pre>
+┌───────────────────────────────────────────────────┐
+│ Xero - Lead Designer/Chaos Theory Specialist      │
+│ Null - Circuit Bender/Quantum Soldering Expert    │
+│ Void - UI/UX Wizard/Holographic Interface Pioneer │
+│ Glitch - Firmware Poet/Time-Signature Disruptor   │
+└───────────────────────────────────────────────────┘
+    </pre>
+  </div>
+  <div id="infinite-content"></div>
+  <div class="loading">Compiling more ASCII synth designs...</div>
+</div>
+
+<script>
+  const infiniteContent = document.getElementById('infinite-content');
+  const scrollContainer = document.getElementById('scroll-container');
+  const loading = document.querySelector('.loading');
+  const countDisplay = document.getElementById('count');
+  
+  let synthCount = 0;
+
+  function generateKnob() {
+    const knobs = ['(o)', '[ ]', '{|}', '<->', '/-\\', '|O|', '[+]', '{O}', '/o\\', '|-|'];
+    return knobs[Math.floor(Math.random() * knobs.length)];
+  }
+
+  function generateSlider() {
+    const sliders = ['|--o--|', '[-==--]', '{---O--}', '<--=-->', '/---o---\\'];
+    return sliders[Math.floor(Math.random() * sliders.length)];
+  }
+
+  function generateButton() {
+    const buttons = ['[O]', '(•)', '<□>', '{x}', '[Δ]'];
+    return buttons[Math.floor(Math.random() * buttons.length)];
+  }
+
+  function generateSynthDesign() {
+    const layouts = [
+      () => `
+  ┌───────────────────┐
+  │  ${generateKnob()} ${generateKnob()} ${generateKnob()} │
+  │ ${generateSlider()}  │
+  │  ${generateButton()} ${generateButton()} ${generateButton()} │
+  └───────────────────┘`,
+      () => `
+   ┌─────────────┐
+   │ ${generateKnob()} ${generateKnob()} ${generateKnob()} │
+   │${generateSlider()}│
+   │ ${generateButton()} ${generateButton()} ${generateButton()} │
+   └─────────────┘`,
+      () => `
+  ╔═════════════════╗
+  ║ ${generateKnob()}  ${generateKnob()}  ${generateKnob()} ║
+  ║${generateSlider()}║
+  ║ ${generateButton()}  ${generateButton()}  ${generateButton()} ║
+  ╚═════════════════╝`,
+      () => `
+   /‾‾‾‾‾‾‾‾‾‾‾‾‾\\
+  | ${generateKnob()} ${generateKnob()} ${generateKnob()} |
+  |${generateSlider()}|
+  | ${generateButton()} ${generateButton()} ${generateButton()} |
+   \\____________/`,
+      () => `
+  .-----------------.
+  | ${generateKnob()} ${generateKnob()} ${generateKnob()} |
+  |${generateSlider()}|
+  | ${generateButton()} ${generateButton()} ${generateButton()} |
+  '-----------------'`
+    ];
+
+    const layout = layouts[Math.floor(Math.random() * layouts.length)]();
+    
+    synthCount++;
+    countDisplay.textContent = synthCount;
+
+    return `
+    <div class="synth-design">
+      <h3>Synth Design #${synthCount}</h3>
+      <pre>${layout}</pre>
+    </div>
+    `;
+  }
+
+  function loadMoreContent() {
+    let newContent = '';
+    for (let i = 0; i < 6; i++) {
+      if (synthCount < 1001) {
+        newContent += generateSynthDesign();
+      }
+    }
+    infiniteContent.innerHTML += newContent;
+
+    if (synthCount >= 1001) {
+      loading.innerHTML = "You've reached the end of 1001 Synth Designs. But innovation never truly ends...";
+      scrollContainer.removeEventListener('scroll', scrollHandler);
+    }
+  }
+
+  function scrollHandler() {
+    if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 20) {
+      loadMoreContent();
+    }
+  }
+
+  scrollContainer.addEventListener('scroll', scrollHandler);
+
+  // Initial load
+  loadMoreContent();
+</script>
+</body></html>

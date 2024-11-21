@@ -1,0 +1,131 @@
+<html><head><base href="https://behringer-escape-plan.com">
+<title>Behringer Escape Plan: Your Ultimate AI-Powered Synth Patch Generator</title>
+<style>
+  body {
+    font-family: 'Courier New', monospace;
+    background-color: #000;
+    color: #0f0;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 2px solid #0f0;
+  }
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+  }
+  .synth-display {
+    background-color: #001100;
+    border: 2px solid #0f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    font-family: 'LCD', 'Courier New', monospace;
+    text-align: center;
+  }
+  .patch-name {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  .parameter {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #0f0;
+  }
+  .generate-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #0f0;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .generate-btn:hover {
+    background-color: #00ff00;
+  }
+  .about {
+    margin-top: 40px;
+  }
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .blink {
+    animation: blink 1s infinite;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Behringer Escape Plan</h1>
+      <p>AI-Powered Synth Patch Generator</p>
+    </header>
+
+    <main>
+      <div class="synth-display">
+        <div class="patch-name">PATCH: <span class="blink">AI_DREAM_01</span></div>
+        <div class="parameters">
+          <div class="parameter">OSC1: SAW</div>
+          <div class="parameter">OSC2: PULSE</div>
+          <div class="parameter">CUTOFF: 64</div>
+          <div class="parameter">RESONANCE: 75</div>
+          <div class="parameter">ENVELOPE: A:10 D:45 S:70 R:25</div>
+          <div class="parameter">LFO: RATE:32 DEPTH:50</div>
+          <div class="parameter">FX: CHORUS</div>
+        </div>
+      </div>
+
+      <button class="generate-btn">GENERATE NEW PATCH</button>
+
+      <div class="about">
+        <h2>About Behringer Escape Plan</h2>
+        <p>Welcome to the cutting-edge world of AI-assisted sound design! Behringer Escape Plan is your ultimate companion for breaking free from creative blocks and exploring uncharted sonic territories with your Behringer synthesizers.</p>
+        <p>Our advanced AI algorithms analyze thousands of iconic synth patches, current music trends, and the unique capabilities of Behringer hardware to generate fresh, inspiring patches at the click of a button. Whether you're working on a DeepMind, Neutron, or any other Behringer synth, our tool will help you unlock new dimensions of sound.</p>
+        <h3>Features:</h3>
+        <ul>
+          <li>Instant patch generation for all Behringer synth models</li>
+          <li>Style-based generation (e.g., "80s pop", "modern techno", "ambient soundscape")</li>
+          <li>Parameter explanations to help you understand the patch</li>
+          <li>Easy export to your Behringer synth via MIDI SysEx</li>
+          <li>Community sharing and rating of generated patches</li>
+        </ul>
+        <p>Start your sonic escape today and let AI fuel your creativity!</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2023 Behringer Escape Plan | <a href="https://behringer-escape-plan.com/terms">Terms of Service</a> | <a href="https://behringer-escape-plan.com/privacy">Privacy Policy</a></p>
+    </footer>
+  </div>
+
+  <script>
+    document.querySelector('.generate-btn').addEventListener('click', function() {
+      // Simulate patch generation
+      const patchName = `AI_${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      document.querySelector('.patch-name span').textContent = patchName;
+      
+      // Update parameters (this would be more complex in a real implementation)
+      const parameters = document.querySelectorAll('.parameter');
+      parameters.forEach(param => {
+        const value = Math.floor(Math.random() * 100);
+        param.textContent = `${param.textContent.split(':')[0]}: ${value}`;
+      });
+    });
+  </script>
+</body></html>

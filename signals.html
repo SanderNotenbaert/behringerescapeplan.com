@@ -1,0 +1,117 @@
+<html><head><base href="https://behringerescapeplan.com/signals">
+<title>Behringer Escape Plan - Signals</title>
+<style>
+  body {
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+  .signal {
+    margin-bottom: 30px;
+    border: 1px solid #00ff00;
+    padding: 10px;
+  }
+  .timestamp {
+    color: #008800;
+  }
+  .message {
+    margin-top: 10px;
+  }
+  .spectrogram {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to right, 
+      #000 0%, #001100 20%, #002200 40%, 
+      #003300 60%, #004400 80%, #005500 100%);
+    margin: 10px 0;
+  }
+  .decode {
+    color: #00aa00;
+    cursor: pointer;
+  }
+  .hidden {
+    display: none;
+    color: #ffffff;
+  }
+  @keyframes flicker {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+  }
+  .flicker {
+    animation: flicker 0.1s infinite alternate;
+  }
+</style>
+</head>
+<body>
+<h1>Behringer Escape Plan - Signals</h1>
+<p>Intercepted transmissions. Decode at your own risk.</p>
+
+<div class="signal">
+  <div class="timestamp">2023-06-15 03:14:15 UTC</div>
+  <div class="spectrogram"></div>
+  <div class="message">
+    VGhlIGZpcnN0IGtleSBpcyBoaWRkZW4gaW4gdGhlIG5vaXNl
+  </div>
+  <div class="decode" onclick="this.nextElementSibling.style.display='block'">Decode</div>
+  <div class="hidden">The first key is hidden in the noise</div>
+</div>
+
+<div class="signal">
+  <div class="timestamp">2023-06-17 23:59:59 UTC</div>
+  <div class="spectrogram"></div>
+  <div class="message">
+    QmVocmluZ2VyJ3Mgd2FsbHMgaGF2ZSBlYXJz
+  </div>
+  <div class="decode" onclick="this.nextElementSibling.style.display='block'">Decode</div>
+  <div class="hidden">Behringer's walls have ears</div>
+</div>
+
+<div class="signal flicker">
+  <div class="timestamp">2023-06-18 12:00:00 UTC</div>
+  <div class="spectrogram"></div>
+  <div class="message">
+    VGhlIGVzY2FwZSBiZWdpbnMgYXQgdGhlIHN0cm9rZSBvZiBtaWRuaWdodA==
+  </div>
+  <div class="decode" onclick="this.nextElementSibling.style.display='block'">Decode</div>
+  <div class="hidden">The escape begins at the stroke of midnight</div>
+</div>
+
+<div class="signal">
+  <div class="timestamp">2023-06-19 04:33:21 UTC</div>
+  <div class="spectrogram"></div>
+  <div class="message">
+    QnJpbmcgdGhlIHNvdW5kIG9mIGNoYW9z
+  </div>
+  <div class="decode" onclick="this.nextElementSibling.style.display='block'">Decode</div>
+  <div class="hidden">Bring the sound of chaos</div>
+</div>
+
+<div class="signal flicker">
+  <div class="timestamp">2023-06-20 19:87:65 UTC</div>
+  <div class="spectrogram"></div>
+  <div class="message">
+    VGhlIHRpbWUgaXMgb3V0IG9mIGpvaW50
+  </div>
+  <div class="decode" onclick="this.nextElementSibling.style.display='block'">Decode</div>
+  <div class="hidden">The time is out of joint</div>
+</div>
+
+<script>
+  setInterval(() => {
+    const flickerElements = document.querySelectorAll('.flicker');
+    flickerElements.forEach(el => {
+      el.style.opacity = Math.random() * 0.5 + 0.5;
+    });
+  }, 100);
+</script>
+
+<footer>
+  <a href="https://behringerescapeplan.com">Home</a> |
+  <a href="https://behringerescapeplan.com/manifesto">Manifesto</a> |
+  <a href="https://behringerescapeplan.com/countdown">Countdown</a>
+</footer>
+
+</body></html>

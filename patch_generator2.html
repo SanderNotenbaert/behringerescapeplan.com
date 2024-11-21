@@ -1,0 +1,273 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/neural-patch-generator">
+  <title>Behringer Escape Plan - Neural Patch Generator</title>
+  <style>
+    body {
+      background: #000;
+      color: #ff00ff;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #neural-network {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vw;
+      height: 80vh;
+    }
+    #patch-panel {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #info-panel {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a { color: #ff00ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: #ff00ff;
+      color: #000;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .patch-cable {
+      position: absolute;
+      height: 2px;
+      background: #ff00ff;
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="neural-network"></div>
+  
+  <div id="patch-panel">
+    <h3>Patch Panel</h3>
+    <div id="patch-slots"></div>
+  </div>
+  
+  <div id="controls">
+    <form method="GET" action="/neural-patch-control">
+      <button type="submit" name="action" value="generate">Generate Patch</button>
+      <button type="submit" name="action" value="mutate">Mutate Network</button>
+      <button type="submit" name="action" value="evolve">Evolve Sound</button>
+    </form>
+  </div>
+  
+  <div id="info-panel">
+    <h2>Neural Patch Generator</h2>
+    <p>Network Complexity: <span id="network-complexity">1</span></p>
+    <p>Mutation Rate: <span id="mutation-rate">0%</span></p>
+    <p>Evolution Stage: <span id="evolution-stage">Primordial</span></p>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/quantum-waveform-collapser">Next: Quantum Waveform Collapser →</a>
+  </div>
+
+  <script>
+    const neuralNetwork = document.getElementById('neural-network');
+    const patchSlots = document.getElementById('patch-slots');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    let networkComplexity = 1;
+    let mutationRate = 0;
+    let evolutionStage = 'Primordial';
+    let nodes = [];
+    let connections = [];
+    let audioNodes = [];
+    
+    function createNeuron(x, y) {
+      const neuron = document.createElement('div');
+      neuron.style.position = 'absolute';
+      neuron.style.left = `${x}px`;
+      neuron.style.top = `${y}px`;
+      neuron.style.width = '10px';
+      neuron.style.height = '10px';
+      neuron.style.borderRadius = '50%';
+      neuron.style.background = '#ff00ff';
+      neuron.style.cursor = 'pointer';
+      neuron.addEventListener('click', () => toggleNeuronActivation(neuron));
+      return neuron;
+    }
+    
+    function createPatchCable(x1, y1, x2, y2) {
+      const cable = document.createElement('div');
+      cable.classList.add('patch-cable');
+      const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      cable.style.width = `${length}px`;
+      cable.style.left = `${x1}px`;
+      cable.style.top = `${y1}px`;
+      cable.style.transform = `rotate(${angle}rad)`;
+      return cable;
+    }
+    
+    function generateNetwork() {
+      neuralNetwork.innerHTML = '';
+      nodes = [];
+      connections = [];
+      for (let i = 0; i < networkComplexity * 5; i++) {
+        const x = Math.random() * neuralNetwork.offsetWidth;
+        const y = Math.random() * neuralNetwork.offsetHeight;
+        const neuron = createNeuron(x, y);
+        neuralNetwork.appendChild(neuron);
+        nodes.push({ element: neuron, x, y });
+      }
+      for (let i = 0; i < networkComplexity * 3; i++) {
+        const sourceIndex = Math.floor(Math.random() * nodes.length);
+        const targetIndex = Math.floor(Math.random() * nodes.length);
+        if (sourceIndex !== targetIndex) {
+          const cable = createPatchCable(nodes[sourceIndex].x, nodes[sourceIndex].y, nodes[targetIndex].x, nodes[targetIndex].y);
+          neuralNetwork.appendChild(cable);
+          connections.push({ source: sourceIndex, target: targetIndex, element: cable });
+        }
+      }
+    }
+    
+    function toggleNeuronActivation(neuron) {
+      if (neuron.style.background === 'rgb(255, 0, 255)') {
+        neuron.style.background = '#00ffff';
+        createAudioNode();
+      } else {
+        neuron.style.background = '#ff00ff';
+        removeAudioNode();
+      }
+    }
+    
+    function createAudioNode() {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(220 + Math.random() * 880, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.start();
+      audioNodes.push({ oscillator, gainNode });
+    }
+    
+    function removeAudioNode() {
+      if (audioNodes.length > 0) {
+        const node = audioNodes.pop();
+        node.gainNode.gain.setValueAtTime(node.gainNode.gain.value, audioContext.currentTime);
+        node.gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+        node.oscillator.stop(audioContext.currentTime + 0.5);
+      }
+    }
+    
+    function mutateNetwork() {
+      mutationRate = Math.min(100, mutationRate + 10);
+      document.getElementById('mutation-rate').textContent = `${mutationRate}%`;
+      
+      nodes.forEach(node => {
+        if (Math.random() < mutationRate / 100) {
+          node.x = Math.random() * neuralNetwork.offsetWidth;
+          node.y = Math.random() * neuralNetwork.offsetHeight;
+          node.element.style.left = `${node.x}px`;
+          node.element.style.top = `${node.y}px`;
+        }
+      });
+      
+      connections.forEach(connection => {
+        const source = nodes[connection.source];
+        const target = nodes[connection.target];
+        connection.element.style.left = `${source.x}px`;
+        connection.element.style.top = `${source.y}px`;
+        const length = Math.sqrt(Math.pow(target.x - source.x, 2) + Math.pow(target.y - source.y, 2));
+        const angle = Math.atan2(target.y - source.y, target.x - source.x);
+        connection.element.style.width = `${length}px`;
+        connection.element.style.transform = `rotate(${angle}rad)`;
+      });
+    }
+    
+    function evolveSound() {
+      networkComplexity++;
+      document.getElementById('network-complexity').textContent = networkComplexity;
+      
+      const stages = ['Primordial', 'Embryonic', 'Juvenile', 'Mature', 'Transcendent'];
+      const stageIndex = Math.min(stages.length - 1, Math.floor(networkComplexity / 2));
+      evolutionStage = stages[stageIndex];
+      document.getElementById('evolution-stage').textContent = evolutionStage;
+      
+      generateNetwork();
+      audioNodes.forEach(node => {
+        node.oscillator.frequency.setValueAtTime(220 + Math.random() * 880 * networkComplexity, audioContext.currentTime);
+        node.oscillator.type = ['sine', 'square', 'sawtooth', 'triangle'][Math.floor(Math.random() * 4)];
+      });
+    }
+    
+    function generatePatchSlots() {
+      for (let i = 0; i < 8; i++) {
+        const slot = document.createElement('div');
+        slot.style.width = '20px';
+        slot.style.height = '20px';
+        slot.style.background = '#330033';
+        slot.style.margin = '5px';
+        slot.style.display = 'inline-block';
+        slot.style.cursor = 'pointer';
+        slot.addEventListener('click', () => activatePatchSlot(slot));
+        patchSlots.appendChild(slot);
+      }
+    }
+    
+    function activatePatchSlot(slot) {
+      slot.style.background = slot.style.background === 'rgb(51, 0, 51)' ? '#ff00ff' : '#330033';
+      if (slot.style.background === 'rgb(255, 0, 255)') {
+        createAudioNode();
+      } else {
+        removeAudioNode();
+      }
+    }
+    
+    generateNetwork();
+    generatePatchSlots();
+    
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      switch(e.submitter.value) {
+        case 'generate':
+          generateNetwork();
+          break;
+        case 'mutate':
+          mutateNetwork();
+          break;
+        case 'evolve':
+          evolveSound();
+          break;
+      }
+    });
+  </script>
+</body></html>

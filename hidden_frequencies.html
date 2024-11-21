@@ -1,0 +1,91 @@
+<html><head><base href="https://behringerescapeplan.com/signals/sonogram">
+<title>Behringer Escape Plan - Sonogram</title>
+<style>
+  body {
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  #sonogram {
+    width: 800px;
+    height: 400px;
+    background: linear-gradient(to bottom, #000, #030, #060, #090, #0c0, #0f0);
+    position: relative;
+    overflow: hidden;
+  }
+  .wave {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    opacity: 0.5;
+    animation: wave 10s infinite linear;
+  }
+  @keyframes wave {
+    0% { transform: translateY(400px) scaleY(1); }
+    50% { transform: translateY(0) scaleY(2); }
+    100% { transform: translateY(400px) scaleY(1); }
+  }
+  #message {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+  }
+  .hidden-message {
+    color: #000;
+    user-select: none;
+  }
+  .hidden-message:hover {
+    color: #0f0;
+  }
+</style>
+</head>
+<body>
+  <h1>Behringer Escape Plan - Sonic Signature</h1>
+  
+  <div id="sonogram">
+    <div class="wave" style="animation-delay: -1s;"></div>
+    <div class="wave" style="animation-delay: -2s;"></div>
+    <div class="wave" style="animation-delay: -3s;"></div>
+    <div class="wave" style="animation-delay: -4s;"></div>
+    <div class="wave" style="animation-delay: -5s;"></div>
+  </div>
+  
+  <div id="message">
+    Analyzing sonic patterns...
+    <br><br>
+    <span class="hidden-message">Hidden frequencies detected at 440Hz, 666Hz, and 1234Hz</span>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sonogram = document.getElementById('sonogram');
+      
+      function createRandomWave() {
+        const wave = document.createElement('div');
+        wave.classList.add('wave');
+        wave.style.top = `${Math.random() * 400}px`;
+        wave.style.animationDuration = `${5 + Math.random() * 10}s`;
+        wave.style.opacity = Math.random() * 0.5 + 0.1;
+        sonogram.appendChild(wave);
+        
+        setTimeout(() => {
+          sonogram.removeChild(wave);
+        }, 15000);
+      }
+
+      setInterval(createRandomWave, 500);
+    });
+  </script>
+
+  <footer>
+    <p><a href="https://behringerescapeplan.com/">Home</a> | <a href="https://behringerescapeplan.com/signals">Back to Signals</a></p>
+  </footer>
+</body></html>

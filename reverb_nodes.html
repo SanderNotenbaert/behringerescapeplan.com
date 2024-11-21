@@ -1,0 +1,166 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/audio-nexus">
+  <title>Behringer Escape Plan - Audio Nexus</title>
+  <style>
+    body {
+      background: #111;
+      color: #00ffff;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #nexus-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #audio-nexus {
+      width: 80vmin;
+      height: 80vmin;
+      position: relative;
+    }
+    .node {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: absolute;
+      background: radial-gradient(circle at 30% 30%, #00ffff, #0000ff);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .node:hover {
+      transform: scale(1.2);
+    }
+    .connection {
+      position: absolute;
+      background: #00ffff;
+      height: 2px;
+      transform-origin: left center;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a { color: #00ffff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: #00ffff;
+      color: #111;
+      border: none;
+      padding: 5px 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="nexus-container">
+    <div id="audio-nexus"></div>
+  </div>
+
+  <div id="controls">
+    <form method="GET" action="/nexus-settings">
+      <button type="submit" name="action" value="add_node">Add Node</button>
+      <button type="submit" name="action" value="clear_connections">Clear Connections</button>
+    </form>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/reverb-void">Next: Reverb Void →</a>
+  </div>
+
+  <script>
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const nexus = document.getElementById('audio-nexus');
+    const nodes = [];
+    const connections = [];
+
+    function createNode() {
+      const node = document.createElement('div');
+      node.classList.add('node');
+      node.style.left = `${Math.random() * 80}%`;
+      node.style.top = `${Math.random() * 80}%`;
+      node.addEventListener('click', toggleConnection);
+      nexus.appendChild(node);
+      nodes.push({
+        element: node,
+        oscillator: audioContext.createOscillator(),
+        gain: audioContext.createGain()
+      });
+      
+      const audioNode = nodes[nodes.length - 1];
+      audioNode.oscillator.type = ['sine', 'square', 'sawtooth', 'triangle'][Math.floor(Math.random() * 4)];
+      audioNode.oscillator.frequency.setValueAtTime(440 * Math.pow(2, Math.floor(Math.random() * 24) / 12), audioContext.currentTime);
+      audioNode.gain.gain.setValueAtTime(0, audioContext.currentTime);
+      audioNode.oscillator.connect(audioNode.gain);
+      audioNode.gain.connect(audioContext.destination);
+      audioNode.oscillator.start();
+    }
+
+    function toggleConnection(event) {
+      const clickedNode = nodes.find(n => n.element === event.target);
+      if (connections.length === 0 || connections[connections.length - 1].to) {
+        connections.push({ from: clickedNode, to: null });
+        clickedNode.element.style.boxShadow = '0 0 10px 5px #00ffff';
+      } else {
+        const lastConnection = connections[connections.length - 1];
+        if (lastConnection.from !== clickedNode) {
+          lastConnection.to = clickedNode;
+          drawConnection(lastConnection);
+          clickedNode.gain.gain.setValueAtTime(0.5, audioContext.currentTime);
+        } else {
+          connections.pop();
+        }
+        clickedNode.element.style.boxShadow = '';
+      }
+    }
+
+    function drawConnection(connection) {
+      const line = document.createElement('div');
+      line.classList.add('connection');
+      const fromRect = connection.from.element.getBoundingClientRect();
+      const toRect = connection.to.element.getBoundingClientRect();
+      const nexusRect = nexus.getBoundingClientRect();
+      
+      const from = {
+        x: fromRect.left - nexusRect.left + fromRect.width / 2,
+        y: fromRect.top - nexusRect.top + fromRect.height / 2
+      };
+      const to = {
+        x: toRect.left - nexusRect.left + toRect.width / 2,
+        y: toRect.top - nexusRect.top + toRect.height / 2
+      };
+      
+      const length = Math.sqrt(Math.pow(to.x - from.x, 2) + Math.pow(to.y - from.y, 2));
+      const angle = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
+      
+      line.style.width = `${length}px`;
+      line.style.left = `${from.x}px`;
+      line.style.top = `${from.y}px`;
+      line.style.transform = `rotate(${angle}deg)`;
+      
+      nexus.appendChild(line);
+    }
+
+    // Initialize with some nodes
+    for (let i = 0; i < 5; i++) {
+      createNode();
+    }
+  </script>
+</body></html>

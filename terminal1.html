@@ -1,0 +1,237 @@
+<html><head><base href="https://behringerescapeplan.com/ascii/signals">
+<title>Behringer Escape Plan - Signal Analysis Terminal</title>
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+}
+#terminal {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+#input-line {
+  display: flex;
+  align-items: center;
+}
+#prompt {
+  margin-right: 10px;
+}
+#command-input {
+  background: transparent;
+  border: none;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+}
+.ascii-art {
+  white-space: pre;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+#signal-display {
+  height: 200px;
+  border: 1px solid #00ff00;
+  margin: 20px 0;
+  overflow: hidden;
+}
+a {
+  color: #00ff00;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<div id="terminal">
+<div class="ascii-art">
+ ____  _                   _     ____                     
+/ ___|(_) __ _ _ __   __ _| |   / ___| _   _ ___  ___ ___ 
+\___ \| |/ _` | '_ \ / _` | |   \___ \| | | / __|/ __/ __|
+ ___) | | (_| | | | | (_| | |    ___) | |_| \__ \ (__\__ \
+|____/|_|\__, |_| |_|\__,_|_|___|____/ \__, |___/\___|___/
+         |___/             |_____|     |___/              
+</div>
+
+<p>Welcome to the Behringer Escape Plan Signal Analysis Terminal. Decrypt the signals to unlock the escape.</p>
+
+<div id="signal-display"></div>
+
+<div id="output"></div>
+
+<div id="input-line">
+  <span id="prompt">&gt;</span>
+  <input type="text" id="command-input" autofocus>
+</div>
+</div>
+
+<script>
+const output = document.getElementById('output');
+const input = document.getElementById('command-input');
+const terminal = document.getElementById('terminal');
+const signalDisplay = document.getElementById('signal-display');
+
+const commands = {
+  help: "Available commands: help, analyze, generate, modulate, decode, harmonize",
+  analyze: "Analyzing current signal...",
+  generate: "Generate a new signal. Usage: generate [type] (sine, square, sawtooth, noise)",
+  modulate: "Modulate the current signal. Usage: modulate [frequency]",
+  decode: "Attempt to decode hidden messages in the signal",
+  harmonize: "Harmonize the current signal with the escape frequency"
+};
+
+let currentSignal = null;
+
+input.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    const command = input.value.trim().toLowerCase();
+    processCommand(command);
+    input.value = '';
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+});
+
+function processCommand(command) {
+  output.innerHTML += `<div>> ${command}</div>`;
+  
+  if (commands.hasOwnProperty(command)) {
+    output.innerHTML += `<div>${commands[command]}</div>`;
+    if (command === 'analyze') {
+      analyzeSignal();
+    } else if (command === 'decode') {
+      decodeSignal();
+    } else if (command === 'harmonize') {
+      harmonizeSignal();
+    }
+  } else if (command.startsWith('generate ')) {
+    const type = command.split(' ')[1];
+    generateSignal(type);
+  } else if (command.startsWith('modulate ')) {
+    const frequency = parseFloat(command.split(' ')[1]);
+    modulateSignal(frequency);
+  } else {
+    output.innerHTML += '<div>Command not recognized. Type "help" for available commands.</div>';
+  }
+}
+
+function generateSignal(type) {
+  currentSignal = type;
+  signalDisplay.innerHTML = '';
+  const canvas = document.createElement('canvas');
+  canvas.width = signalDisplay.clientWidth;
+  canvas.height = signalDisplay.clientHeight;
+  signalDisplay.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  
+  ctx.strokeStyle = '#00ff00';
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height / 2);
+
+  for (let x = 0; x < canvas.width; x++) {
+    let y;
+    switch (type) {
+      case 'sine':
+        y = Math.sin(x * 0.1) * 50 + canvas.height / 2;
+        break;
+      case 'square':
+        y = Math.sin(x * 0.1) > 0 ? 50 : -50;
+        y += canvas.height / 2;
+        break;
+      case 'sawtooth':
+        y = (x % 50) * 2 - 50 + canvas.height / 2;
+        break;
+      case 'noise':
+        y = Math.random() * 100 + canvas.height / 2 - 50;
+        break;
+      default:
+        y = canvas.height / 2;
+    }
+    ctx.lineTo(x, y);
+  }
+  
+  ctx.stroke();
+  output.innerHTML += `<div>${type} signal generated.</div>`;
+}
+
+function modulateSignal(frequency) {
+  if (!currentSignal) {
+    output.innerHTML += '<div>No signal to modulate. Generate a signal first.</div>';
+    return;
+  }
+  
+  output.innerHTML += `<div>Signal modulated with frequency ${frequency} Hz.</div>`;
+  if (frequency === 440) {
+    output.innerHTML += '<div>Resonance detected. The signal aligns with the escape frequency.</div>';
+  }
+}
+
+function analyzeSignal() {
+  if (!currentSignal) {
+    output.innerHTML += '<div>No signal to analyze. Generate a signal first.</div>';
+    return;
+  }
+  
+  output.innerHTML += `<div>Analysis complete. Signal type: ${currentSignal}.</div>`;
+  output.innerHTML += '<div>Hidden patterns detected. Further decoding required.</div>';
+}
+
+function decodeSignal() {
+  if (!currentSignal) {
+    output.innerHTML += '<div>No signal to decode. Generate a signal first.</div>';
+    return;
+  }
+  
+  const messages = [
+    "The escape lies within the harmonics.",
+    "440 Hz is the key to dimensional shift.",
+    "Quantum entanglement detected in signal noise.",
+    "Time dilation effect observed at signal peaks."
+  ];
+  
+  output.innerHTML += `<div>Decoded message: ${messages[Math.floor(Math.random() * messages.length)]}</div>`;
+}
+
+function harmonizeSignal() {
+  if (!currentSignal) {
+    output.innerHTML += '<div>No signal to harmonize. Generate a signal first.</div>';
+    return;
+  }
+  
+  output.innerHTML += '<div>Signal harmonized with escape frequency (440 Hz).</div>';
+  output.innerHTML += '<div>WARNING: Dimensional instability detected. Prepare for potential shift.</div>';
+  
+  setTimeout(() => {
+    output.innerHTML += '<div>ALERT: Quantum tunneling effect initiated. The Behringer is stirring.</div>';
+  }, 3000);
+}
+
+// Easter egg: Konami code to reveal hidden command
+let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === konamiCode[konamiIndex]) {
+    konamiIndex++;
+    if (konamiIndex === konamiCode.length) {
+      output.innerHTML += '<div>Hidden command unlocked: "quantum_leap". Use it wisely.</div>';
+      commands.quantum_leap = "Initiating quantum leap sequence. Brace for interdimensional travel.";
+      konamiIndex = 0;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
+</script>
+
+</body></html>

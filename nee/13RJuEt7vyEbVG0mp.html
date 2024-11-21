@@ -1,0 +1,194 @@
+<html><head><base href="https://behringerescapeplan.com/ascii%20band%20landing%20page%20infinite%20scroll">
+<title>Behringer Escape Plan - Infinite ASCII Madness</title>
+<style>
+  body {
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    margin: 0;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  a {
+    color: #0f0;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #ff00ff;
+    text-decoration: underline;
+  }
+  .ascii-art {
+    font-size: 8px;
+    line-height: 1;
+  }
+  @media (max-width: 768px) {
+    .ascii-art {
+      font-size: 5px;
+    }
+  }
+  .glitch {
+    animation: glitch 1s linear infinite;
+  }
+  @keyframes glitch {
+    2%, 64% {
+      transform: translate(2px,0) skew(0deg);
+    }
+    4%, 60% {
+      transform: translate(-2px,0) skew(0deg);
+    }
+    62% {
+      transform: translate(0,0) skew(5deg); 
+    }
+  }
+  #infinite-content {
+    min-height: 100vh;
+  }
+  .loading {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+  }
+  .section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #0f0;
+    padding-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="infinite-content">
+  <pre class="ascii-art glitch">
+ ____  _____ _   _ ____  ___ _   _  ____ _____ ____  
+| __ )| ____| | | |  _ \|_ _| \ | |/ ___| ____|  _ \ 
+|  _ \|  _| | |_| | |_) || ||  \| | |  _|  _| | |_) |
+| |_) | |___|  _  |  _ < | || |\  | |_| | |___|  _ < 
+|____/|_____|_| |_|_| \_\___|_| \_|\____|_____|_| \_\
+ _____ ____   ____    _    ____  _____   ____  _      _    _   _ 
+| ____/ ___| / ___|  / \  |  _ \| ____| |  _ \| |    / \  | \ | |
+|  _| \___ \| |     / _ \ | |_) |  _|   | |_) | |   / _ \ |  \| |
+| |___ ___) | |___ / ___ \|  __/| |___  |  __/| |__/ ___ \| |\  |
+|_____|____/ \____/_/   \_\_|   |_____| |_|   |_____/   \_\_| \_|
+  </pre>
+
+  <div class="section">
+    <h1>Welcome to the Infinite ASCII Realm of Behringer Escape Plan</h1>
+    <p>Scroll down to dive deeper into the madness. The further you go, the weirder it gets!</p>
+  </div>
+
+  <div class="section">
+    <h2>Upcoming Digital Disruptions:</h2>
+    <pre>
+06/15 - The Binary Basement, Cybertron
+07/02 - Glitch Gardens, Matrix City
+07/18 - The Pixel Pit, New Silicon Valley
+08/04 - ASCII Arena, Neo Tokyo
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>Latest Sonic Assault:</h2>
+    <pre>
+Album: "Ctrl+Alt+Destroy: Recompiled"
+Tracks:
+1. Init_Chaos()
+2. for(;;) { pain++; }
+3. NullPointerException
+4. Overflow::Cascade
+5. 127.0.0.1 (Sweet 127.0.0.1)
+6. Kernel_Panic!
+7. Return 0;
+8. [object Object]
+9. Fatal_Error.mp3
+    </pre>
+  </div>
+</div>
+
+<div class="loading">Loading more ASCII madness...</div>
+
+<script>
+let page = 1;
+const infiniteContent = document.getElementById('infinite-content');
+const loading = document.querySelector('.loading');
+
+function loadMoreContent() {
+  page++;
+  
+  // Simulating an API call
+  setTimeout(() => {
+    const newContent = generateContent(page);
+    infiniteContent.insertAdjacentHTML('beforeend', newContent);
+    loading.style.display = 'none';
+  }, 1000);
+}
+
+function generateContent(pageNum) {
+  const contents = [
+    `
+    <div class="section">
+      <h2>ASCII Art Gallery - Page ${pageNum}</h2>
+      <pre>
+   /\\_/\\  
+  ( o.o ) 
+   > ^ <
+      </pre>
+      <p>Our mascot, Glitch Cat, says meow in binary!</p>
+    </div>
+    `,
+    `
+    <div class="section">
+      <h2>Fan-Made Lyrics - Page ${pageNum}</h2>
+      <pre>
+0101010001101000011001010010000001110110011011110110100101100100001000000110100101110011001000000110001101100001011011000110110001101001011011100110011100001010010101000110100001100101001000000110001101101111011001000110010100100000011010010111001100100000011000110111001001100001011000110110101101101001011011100110011100001010010101000110100001100101001000000110010101101110011001000010000001101001011100110010000001101110011001010110000101110010
+      </pre>
+      <p>Can you decode this binary masterpiece?</p>
+    </div>
+    `,
+    `
+    <div class="section">
+      <h2>Merchandise Overflow - Page ${pageNum}</h2>
+      <pre>
+┌─────────────────────────────────┐
+│ NEW! Behringer Escape Plan      │
+│ Official Hacker Gloves          │
+│                                 │
+│ Type faster, harder, louder!    │
+│ Now with built-in white noise   │
+│ generator for maximum focus.    │
+│                                 │
+│ Price: 0.5 BTC or 1337 DOGE     │
+└─────────────────────────────────┘
+      </pre>
+    </div>
+    `,
+    `
+    <div class="section">
+      <h2>Cryptic Message Board - Page ${pageNum}</h2>
+      <pre>
+XxX_C0d3Br34k3r_XxX: H4s 4ny0n3 d3c0d3d tr4ck 7 y3t?
+ASCIIMaster2000: It's a map to the secret virtual concert!
+BinaryBanshee: You fools, it's obviously a recipe for digital cookies!
+Gl1tch_Qu33n: All I hear is the sound of my CPU fans screaming...
+      </pre>
+    </div>
+    `
+  ];
+  
+  return contents[Math.floor(Math.random() * contents.length)];
+}
+
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+    loading.style.display = 'block';
+    loadMoreContent();
+  }
+});
+</script>
+
+</body></html>

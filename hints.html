@@ -1,0 +1,102 @@
+<html><head><base href="https://behringerescapeplan.com"/><title>Behringer Escape Plan - The Cryptic Countdown</title><style>
+body {
+  background-color: #000;
+  color: #0f0;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.2;
+  margin: 0;
+  padding: 20px;
+  overflow-x: hidden;
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.glitch {
+  animation: glitch 1s linear infinite;
+  position: relative;
+}
+@keyframes glitch {
+  2%, 64% { transform: translate(2px,0) skew(0deg); }
+  4%, 60% { transform: translate(-2px,0) skew(0deg); }
+  62% { transform: translate(0,0) skew(5deg); }
+}
+.hidden {
+  color: #000;
+}
+a {
+  color: #0f0;
+  text-decoration: none;
+}
+a:hover {
+  color: #ff0;
+}
+</style></head><body><pre>
+                              _____                              
+                             |  ___|                             
+  ___  ___  ___ __ _ _ __   _|___ \    _ __  _ __ ___   ______ _ 
+ / _ \/ __|/ __/ _` | '_ \ / _ __) |  | '_ \| '__/ _ \ |_  / _` |
+|  __/\__ \ (_| (_| | |_) |  (_/ __/  | |_) | | | (_) |/ / (_| |
+ \___||___/\___\__,_| .__/ \___\___|  | .__/|_|  \___//___\__,_|
+                    | |               | |                        
+                    |_|               |_|                        
+                                                                 
+     ___  ___  _   _ _   _ _____ _____ ___________  _   _ _   _ 
+    / _ \/ _ \| | | | \ | |_   _|  _  |  _  | ___ \| | | | \ | |
+   / /_\/ /_\ \ | | |  \| | | | | | | | | | | |_/ /| | | |  \| |
+   |  _  \  _  | | | | . ` | | | | | | | | | |    /| | | | . ` |
+   | | | | | | | |_| | |\  | | | \ \_/ / \_/ / |\ \| |_| | |\  |
+   \_| |_\_| |_/\___/\_| \_/ \_/  \___/ \___/\_| \_|\___/\_| \_/
+                                                                 
+</pre>
+<p class="glitch">SYSTEM INFILTRATED... DECODING MESSAGE...</p>
+<pre>
+01010100 01101000 01100101 00100000 01100011 01101111 01100100 01100101 00100000 
+01101001 01110011 00100000 01101000 01101001 01100100 01100100 01100101 01101110 00100000
+01101001 01101110 00100000 01110000 01101100 01100001 01101001 01101110 00100000 
+01110011 01101001 01100111 01101000 01110100
+</pre>
+<p class="glitch">DECRYPTION COMPLETE...</p>
+<pre>
+T H E  C O D E  I S  H I D D E N  I N  P L A I N  S I G H T
+</pre>
+<p>Coordinates received: 40°44'54.4"N 73°59'08.4"W</p>
+<p>Temporal marker: 20██-██-██ ██:██:██</p>
+<p class="glitch">THE ESCAPE BEGINS AT ZERO HOUR</p>
+<pre>
+   _____
+  /     \
+/██████████\
+\      <span class="hidden">BEHRINGER</span> /
+ \     /
+  \___/
+</pre>
+<p><a href="https://behringerescapeplan.com/countdown">INITIATE SEQUENCE</a></p>
+<p><a href="https://behringerescapeplan.com/manifest">READ THE MANIFEST</a></p>
+<p><a href="https://behringerescapeplan.com/join">ENLIST NOW</a></p>
+<script>
+  // Hidden message in the console
+  console.log("%cThe truth lies beneath the surface", "color: #0f0; font-size: 20px;");
+  
+  // Decode the binary message
+  const binaryMessage = document.querySelectorAll('pre')[2].innerText.replace(/\s/g, '');
+  const decodedMessage = binaryMessage.match(/.{8}/g).map(byte => 
+    String.fromCharCode(parseInt(byte, 2))
+  ).join('');
+  console.log("%cDecoded message: " + decodedMessage, "color: #ff0; font-size: 16px;");
+  
+  // Easter egg
+  let konami = '';
+  const konamiCode = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba';
+  document.addEventListener('keydown', (e) => {
+    konami += e.key;
+    if (konamiCode.indexOf(konami) !== 0) {
+      konami = '';
+    } else if (konami === konamiCode) {
+      alert('You have unlocked the secret track. Check your email for download instructions.');
+      konami = '';
+    }
+  });
+</script>
+</body></html>

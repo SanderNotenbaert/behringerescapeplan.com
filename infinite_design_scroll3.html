@@ -1,0 +1,200 @@
+<html><head><base href="https://behringerescapeplan.com/ascii%20band%20landing%20page%20infinite%20scroll%20ascii%20100%20synth%20variations">
+<title>Behringer Escape Plan - Infinite ASCII Synth Madness x100</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  #scroll-container {
+    position: relative;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+  .ascii-art {
+    font-size: 8px;
+    line-height: 1;
+    white-space: pre;
+  }
+  @media (max-width: 768px) {
+    .ascii-art {
+      font-size: 5px;
+    }
+  }
+  .content {
+    padding: 20px;
+  }
+  a {
+    color: #0f0;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #ff00ff;
+    text-decoration: underline;
+  }
+  .loading {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+  }
+  .glitch {
+    animation: glitch 1s linear infinite;
+  }
+  @keyframes glitch {
+    2%, 64% {
+      transform: translate(2px,0) skew(0deg);
+    }
+    4%, 60% {
+      transform: translate(-2px,0) skew(0deg);
+    }
+    62% {
+      transform: translate(0,0) skew(5deg); 
+    }
+  }
+  .synth {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #0f0;
+  }
+</style>
+</head>
+<body>
+<div id="scroll-container">
+  <div class="content">
+    <pre class="ascii-art glitch">
+ ____  _____ _   _ ____  ___ _   _  ____ _____ ____  
+| __ )| ____| | | |  _ \|_ _| \ | |/ ___| ____|  _ \ 
+|  _ \|  _| | |_| | |_) || ||  \| | |  _|  _| | |_) |
+| |_) | |___|  _  |  _ < | || |\  | |_| | |___|  _ < 
+|____/|_____|_| |_|_| \_\___|_| \_|\____|_____|_| \_\
+ _____ ____   ____    _    ____  _____   ____  _      _    _   _ 
+| ____/ ___| / ___|  / \  |  _ \| ____| |  _ \| |    / \  | \ | |
+|  _| \___ \| |     / _ \ | |_) |  _|   | |_) | |   / _ \ |  \| |
+| |___ ___) | |___ / ___ \|  __/| |___  |  __/| |__/ ___ \| |\  |
+|_____|____/ \____/_/   \_\_|   |_____| |_|   |_____/   \_\_| \_\
+    </pre>
+
+    <h1>Welcome to the Infinite ASCII Synth Scroll of Behringer Escape Plan</h1>
+
+    <p>Prepare for an endless journey through 100 unique ASCII synth variations!</p>
+
+    <h2>Latest Album: "100 Shades of Sine"</h2>
+    <pre>
+Tracks:
+1. Centennial Oscillation
+2. 100 VCOs and a Glitch
+3. Binary Century
+4. Modular Mayhem to the 100th Power
+5. Triple Digit Decibels
+    </pre>
+  </div>
+  <div id="infinite-content"></div>
+  <div class="loading">Generating more ASCII synths...</div>
+</div>
+
+<script>
+  const infiniteContent = document.getElementById('infinite-content');
+  const scrollContainer = document.getElementById('scroll-container');
+  const loading = document.querySelector('.loading');
+  
+  function generateRandomSynth() {
+    const synthTypes = ['Analog', 'Digital', 'Modular', 'Hybrid', 'Wavetable', 'FM', 'Additive', 'Granular'];
+    const randomType = synthTypes[Math.floor(Math.random() * synthTypes.length)];
+    
+    const knobs = 'OooΘθ◎⊙⊚';
+    const buttons = '[]◻◼▢▣⬜⬛';
+    const sliders = '|┃┊┋';
+    const displays = '_━┅┉';
+    
+    let synthArt = '';
+    for(let i = 0; i < 5; i++) {
+      let row = '';
+      for(let j = 0; j < 20; j++) {
+        const r = Math.random();
+        if(r < 0.2) row += knobs[Math.floor(Math.random() * knobs.length)];
+        else if(r < 0.4) row += buttons[Math.floor(Math.random() * buttons.length)];
+        else if(r < 0.6) row += sliders[Math.floor(Math.random() * sliders.length)];
+        else if(r < 0.8) row += displays[Math.floor(Math.random() * displays.length)];
+        else row += ' ';
+      }
+      synthArt += row + '\n';
+    }
+    
+    return `
+    <div class="synth">
+      <h3>${randomType} Synth #${Math.floor(Math.random() * 1000)}</h3>
+      <pre>
+   ____________________
+  |                    |
+  | ${synthArt.trim()} |
+  |____________________|
+      </pre>
+    </div>
+    `;
+  }
+
+  function generateSynthDescription() {
+    const adjectives = ['mind-bending', 'ear-shattering', 'reality-warping', 'time-bending', 'dimension-shifting'];
+    const nouns = ['leads', 'bass', 'pads', 'arps', 'drones', 'textures', 'soundscapes'];
+    const techniques = ['subtractive synthesis', 'FM modulation', 'wavetable morphing', 'granular processing', 'physical modeling'];
+    
+    return `This synth is responsible for the ${adjectives[Math.floor(Math.random() * adjectives.length)]} ${nouns[Math.floor(Math.random() * nouns.length)]} in our latest track, utilizing advanced ${techniques[Math.floor(Math.random() * techniques.length)]}.`;
+  }
+
+  let synthCount = 0;
+
+  function loadMoreContent() {
+    const newSynth = generateRandomSynth();
+    const description = generateSynthDescription();
+    infiniteContent.innerHTML += `
+      <h2>Synth #${++synthCount}</h2>
+      ${newSynth}
+      <p>${description}</p>
+    `;
+    
+    if(synthCount % 10 === 0) {
+      infiniteContent.innerHTML += `
+        <h2>Synth Milestone: ${synthCount} Synthesizers!</h2>
+        <p>You've scrolled through ${synthCount} unique ASCII synths. Can you make it to 100?</p>
+      `;
+    }
+    
+    if(synthCount === 100) {
+      infiniteContent.innerHTML += `
+        <h2>Congratulations! You've reached 100 Synths!</h2>
+        <p>You've completed the Behringer Escape Plan Synth Marathon. Your ears may never be the same again.</p>
+        <pre class="ascii-art">
+   ___________
+ '._==_==_=_.'
+ .-\\:      /-.
+| (|:.     |) |
+ '-|:.     |-'
+   \\::.    /
+    '::. .'
+      ) (
+    _.' '._
+   \`"""""""\`
+        </pre>
+      `;
+    }
+  }
+
+  scrollContainer.addEventListener('scroll', () => {
+    if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 20) {
+      loadMoreContent();
+    }
+  });
+
+  // Initial load
+  for (let i = 0; i < 5; i++) {
+    loadMoreContent();
+  }
+</script>
+</body></html>

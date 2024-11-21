@@ -1,0 +1,321 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/neural-patch-generator">
+  <title>Behringer Escape Plan - Neural Patch Generator</title>
+  <style>
+    body {
+      background: #000;
+      color: #ff00ff;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #neural-network {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vw;
+      height: 80vh;
+    }
+    .neuron {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 0, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+    .synapse {
+      position: absolute;
+      background: rgba(255, 0, 255, 0.2);
+      transform-origin: 0 0;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #info-panel {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a { color: #ff00ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: #ff00ff;
+      color: #000;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    #patch-display {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 0, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      max-width: 80vw;
+      overflow-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div id="neural-network"></div>
+  
+  <div id="controls">
+    <form method="GET" action="/neural-patch">
+      <button type="submit" name="action" value="generate">Generate Patch</button>
+      <button type="submit" name="action" value="mutate">Mutate Network</button>
+      <button type="submit" name="action" value="evolve">Evolve Sound</button>
+    </form>
+  </div>
+  
+  <div id="info-panel">
+    <h2>Neural Patch Generator</h2>
+    <p>Neurons: <span id="neuron-count">0</span></p>
+    <p>Synapses: <span id="synapse-count">0</span></p>
+    <p>Complexity: <span id="complexity">0</span></p>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/quantum-effects-engine">Next: Quantum Effects Engine →</a>
+  </div>
+
+  <div id="patch-display"></div>
+
+  <script>
+    const network = document.getElementById('neural-network');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    let neurons = [];
+    let synapses = [];
+    let complexity = 0;
+    let currentPatch = {};
+    
+    function createNeuron() {
+      const neuron = document.createElement('div');
+      neuron.classList.add('neuron');
+      neuron.style.left = `${Math.random() * 100}%`;
+      neuron.style.top = `${Math.random() * 100}%`;
+      network.appendChild(neuron);
+      neurons.push(neuron);
+      updateNeuronCount();
+    }
+    
+    function createSynapse(from, to) {
+      const synapse = document.createElement('div');
+      synapse.classList.add('synapse');
+      updateSynapsePosition(synapse, from, to);
+      network.appendChild(synapse);
+      synapses.push({ element: synapse, from, to });
+      updateSynapseCount();
+    }
+    
+    function updateSynapsePosition(synapse, from, to) {
+      const fromRect = from.getBoundingClientRect();
+      const toRect = to.getBoundingClientRect();
+      const networkRect = network.getBoundingClientRect();
+      
+      const dx = toRect.left - fromRect.left;
+      const dy = toRect.top - fromRect.top;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx);
+      
+      synapse.style.width = `${length}px`;
+      synapse.style.height = '2px';
+      synapse.style.left = `${(fromRect.left - networkRect.left + 10)}px`;
+      synapse.style.top = `${(fromRect.top - networkRect.top + 10)}px`;
+      synapse.style.transform = `rotate(${angle}rad)`;
+    }
+    
+    function updateNeuronCount() {
+      document.getElementById('neuron-count').textContent = neurons.length;
+    }
+    
+    function updateSynapseCount() {
+      document.getElementById('synapse-count').textContent = synapses.length;
+    }
+    
+    function updateComplexity() {
+      complexity = neurons.length * synapses.length;
+      document.getElementById('complexity').textContent = complexity;
+    }
+    
+    function initializeNetwork() {
+      for (let i = 0; i < 10; i++) {
+        createNeuron();
+      }
+      for (let i = 0; i < 15; i++) {
+        const from = neurons[Math.floor(Math.random() * neurons.length)];
+        const to = neurons[Math.floor(Math.random() * neurons.length)];
+        if (from !== to) {
+          createSynapse(from, to);
+        }
+      }
+      updateComplexity();
+    }
+    
+    function generatePatch() {
+      currentPatch = {
+        oscillator: {
+          type: ['sine', 'square', 'sawtooth', 'triangle'][Math.floor(Math.random() * 4)],
+          frequency: Math.random() * 440 + 110
+        },
+        filter: {
+          type: ['lowpass', 'highpass', 'bandpass'][Math.floor(Math.random() * 3)],
+          frequency: Math.random() * 5000 + 100,
+          Q: Math.random() * 10
+        },
+        envelope: {
+          attack: Math.random() * 0.5,
+          decay: Math.random() * 0.5,
+          sustain: Math.random(),
+          release: Math.random() * 2
+        },
+        effects: {
+          delay: Math.random() * 0.5,
+          feedback: Math.random() * 0.5
+        }
+      };
+      displayPatch();
+      playSoundPatch();
+    }
+    
+    function mutateNetwork() {
+      if (Math.random() > 0.5 && neurons.length < 20) {
+        createNeuron();
+      } else if (neurons.length > 5) {
+        const index = Math.floor(Math.random() * neurons.length);
+        network.removeChild(neurons[index]);
+        neurons.splice(index, 1);
+        synapses = synapses.filter(synapse => synapse.from !== neurons[index] && synapse.to !== neurons[index]);
+        updateNeuronCount();
+        updateSynapseCount();
+      }
+      
+      if (Math.random() > 0.5 && synapses.length < 30) {
+        const from = neurons[Math.floor(Math.random() * neurons.length)];
+        const to = neurons[Math.floor(Math.random() * neurons.length)];
+        if (from !== to) {
+          createSynapse(from, to);
+        }
+      } else if (synapses.length > 5) {
+        const index = Math.floor(Math.random() * synapses.length);
+        network.removeChild(synapses[index].element);
+        synapses.splice(index, 1);
+        updateSynapseCount();
+      }
+      
+      updateComplexity();
+      neurons.forEach(neuron => {
+        neuron.style.left = `${Math.random() * 100}%`;
+        neuron.style.top = `${Math.random() * 100}%`;
+      });
+      synapses.forEach(synapse => {
+        updateSynapsePosition(synapse.element, synapse.from, synapse.to);
+      });
+    }
+    
+    function evolveSoundPatch() {
+      currentPatch.oscillator.frequency *= 0.9 + Math.random() * 0.2;
+      currentPatch.filter.frequency *= 0.9 + Math.random() * 0.2;
+      currentPatch.filter.Q *= 0.9 + Math.random() * 0.2;
+      currentPatch.envelope.attack *= 0.9 + Math.random() * 0.2;
+      currentPatch.envelope.decay *= 0.9 + Math.random() * 0.2;
+      currentPatch.envelope.sustain = Math.max(0, Math.min(1, currentPatch.envelope.sustain * (0.9 + Math.random() * 0.2)));
+      currentPatch.envelope.release *= 0.9 + Math.random() * 0.2;
+      currentPatch.effects.delay *= 0.9 + Math.random() * 0.2;
+      currentPatch.effects.feedback = Math.max(0, Math.min(0.9, currentPatch.effects.feedback * (0.9 + Math.random() * 0.2)));
+      
+      displayPatch();
+      playSoundPatch();
+    }
+    
+    function displayPatch() {
+      const patchDisplay = document.getElementById('patch-display');
+      patchDisplay.innerHTML = `
+        <strong>Current Patch:</strong><br>
+        Oscillator: ${currentPatch.oscillator.type}, ${currentPatch.oscillator.frequency.toFixed(2)}Hz<br>
+        Filter: ${currentPatch.filter.type}, ${currentPatch.filter.frequency.toFixed(2)}Hz, Q: ${currentPatch.filter.Q.toFixed(2)}<br>
+        Envelope: A:${currentPatch.envelope.attack.toFixed(2)}s, D:${currentPatch.envelope.decay.toFixed(2)}s, S:${currentPatch.envelope.sustain.toFixed(2)}, R:${currentPatch.envelope.release.toFixed(2)}s<br>
+        Effects: Delay: ${currentPatch.effects.delay.toFixed(2)}s, Feedback: ${currentPatch.effects.feedback.toFixed(2)}
+      `;
+    }
+    
+    function playSoundPatch() {
+      const oscillator = audioContext.createOscillator();
+      const filter = audioContext.createBiquadFilter();
+      const envelope = audioContext.createGain();
+      const delay = audioContext.createDelay();
+      const feedback = audioContext.createGain();
+      
+      oscillator.type = currentPatch.oscillator.type;
+      oscillator.frequency.setValueAtTime(currentPatch.oscillator.frequency, audioContext.currentTime);
+      
+      filter.type = currentPatch.filter.type;
+      filter.frequency.setValueAtTime(currentPatch.filter.frequency, audioContext.currentTime);
+      filter.Q.setValueAtTime(currentPatch.filter.Q, audioContext.currentTime);
+      
+      envelope.gain.setValueAtTime(0, audioContext.currentTime);
+      envelope.gain.linearRampToValueAtTime(1, audioContext.currentTime + currentPatch.envelope.attack);
+      envelope.gain.linearRampToValueAtTime(currentPatch.envelope.sustain, audioContext.currentTime + currentPatch.envelope.attack + currentPatch.envelope.decay);
+      
+      delay.delayTime.setValueAtTime(currentPatch.effects.delay, audioContext.currentTime);
+      feedback.gain.setValueAtTime(currentPatch.effects.feedback, audioContext.currentTime);
+      
+      oscillator.connect(filter);
+      filter.connect(envelope);
+      envelope.connect(delay);
+      delay.connect(feedback);
+      feedback.connect(delay);
+      envelope.connect(audioContext.destination);
+      delay.connect(audioContext.destination);
+      
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + currentPatch.envelope.attack + currentPatch.envelope.decay + currentPatch.envelope.release + 1);
+      
+      envelope.gain.setValueAtTime(currentPatch.envelope.sustain, audioContext.currentTime + currentPatch.envelope.attack + currentPatch.envelope.decay + 1);
+      envelope.gain.linearRampToValueAtTime(0, audioContext.currentTime + currentPatch.envelope.attack + currentPatch.envelope.decay + currentPatch.envelope.release + 1);
+    }
+    
+    initializeNetwork();
+    
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      switch(e.submitter.value) {
+        case 'generate':
+          generatePatch();
+          break;
+        case 'mutate':
+          mutateNetwork();
+          break;
+        case 'evolve':
+          evolveSoundPatch();
+          break;
+      }
+    });
+  </script>
+</body></html>

@@ -1,0 +1,217 @@
+<html><head><base href="https://behringerescapeplan.com/ascii%20band%20landing%20page%20infinite%20scroll%20ascii%20synth%20variations">
+<title>Behringer Escape Plan - Infinite ASCII Synth Madness</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  #scroll-container {
+    position: relative;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+  .ascii-art {
+    font-size: 8px;
+    line-height: 1;
+    white-space: pre;
+  }
+  @media (max-width: 768px) {
+    .ascii-art {
+      font-size: 5px;
+    }
+  }
+  .content {
+    padding: 20px;
+  }
+  a {
+    color: #0f0;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #ff00ff;
+    text-decoration: underline;
+  }
+  .loading {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+  }
+  .glitch {
+    animation: glitch 1s linear infinite;
+  }
+  @keyframes glitch {
+    2%, 64% {
+      transform: translate(2px,0) skew(0deg);
+    }
+    4%, 60% {
+      transform: translate(-2px,0) skew(0deg);
+    }
+    62% {
+      transform: translate(0,0) skew(5deg); 
+    }
+  }
+  .synth {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #0f0;
+  }
+</style>
+</head>
+<body>
+<div id="scroll-container">
+  <div class="content">
+    <pre class="ascii-art glitch">
+ ____  _____ _   _ ____  ___ _   _  ____ _____ ____  
+| __ )| ____| | | |  _ \|_ _| \ | |/ ___| ____|  _ \ 
+|  _ \|  _| | |_| | |_) || ||  \| | |  _|  _| | |_) |
+| |_) | |___|  _  |  _ < | || |\  | |_| | |___|  _ < 
+|____/|_____|_| |_|_| \_\___|_| \_|\____|_____|_| \_\
+ _____ ____   ____    _    ____  _____   ____  _      _    _   _ 
+| ____/ ___| / ___|  / \  |  _ \| ____| |  _ \| |    / \  | \ | |
+|  _| \___ \| |     / _ \ | |_) |  _|   | |_) | |   / _ \ |  \| |
+| |___ ___) | |___ / ___ \|  __/| |___  |  __/| |__/ ___ \| |\  |
+|_____|____/ \____/_/   \_\_|   |_____| |_|   |_____/   \_\_| \_|
+    </pre>
+
+    <h1>Welcome to the Infinite ASCII Synth Scroll of Behringer Escape Plan</h1>
+
+    <p>Keep scrolling for an endless journey through our mathcore synth madness!</p>
+
+    <h2>Latest Release:</h2>
+    <pre>
+Album: "Synthetic Escape Velocity"
+Tracks:
+1. Oscillator Overdrive
+2. LFO Labyrinth
+3. ADSR Apocalypse
+4. Wavetable Wormhole
+5. Modular Madness
+    </pre>
+
+    <h2>Upcoming Synth Shows:</h2>
+    <pre>
+11/01 - The Patch Bay, Eurorack City
+11/15 - Voltage Controlled Venue, Moog Town
+11/30 - The Analog Abyss, Buchla's Dream
+12/13 - Digital Domain, Silicon Valley 2049
+    </pre>
+
+    <h2>Synth Wizards:</h2>
+    <pre>
+┌─────────────────────────────────────────┐
+│ Xero - Vocals/Vocoder Virtuoso          │
+│ Null - Guitar/FM Synthesis              │
+│ Void - Bass/Subtractive Synthesis       │
+│ Glitch - Drums/Granular Synthesis       │
+└─────────────────────────────────────────┘
+    </pre>
+  </div>
+  <div id="infinite-content"></div>
+  <div class="loading">Patching more ASCII synths...</div>
+</div>
+
+<script>
+  const infiniteContent = document.getElementById('infinite-content');
+  const scrollContainer = document.getElementById('scroll-container');
+  const loading = document.querySelector('.loading');
+  
+  const synthVariations = [
+    `
+    <div class="synth">
+      <h3>Analog Synth</h3>
+      <pre>
+   _____________________
+  |  ___________________  |
+  | |                   | |
+  | |  O  O  O  O  O  O | |
+  | | (o)(o)(o)(o)(o)(o)| |
+  | |                   | |
+  |  ~~~~~~~~~~~~~~~~~~~  |
+  |_____________________|
+      </pre>
+    </div>
+    `,
+    `
+    <div class="synth">
+      <h3>Modular Synth</h3>
+      <pre>
+  ┌─────┐ ┌─────┐ ┌─────┐
+  │ VCO │ │ VCF │ │ VCA │
+  │  o  │ │  o  │ │  o  │
+  │ o o │ │ o o │ │ o o │
+  │o o o│ │o o o│ │o o o│
+  └─────┘ └─────┘ └─────┘
+      </pre>
+    </div>
+    `,
+    `
+    <div class="synth">
+      <h3>Digital Synth</h3>
+      <pre>
+   ___________________
+  |  _________________  |
+  | | DIGITAL SYNTH   | |
+  | | 01001011010101  | |
+  | | 10101010101010  | |
+  | |_________________| |
+  |___________________|
+      </pre>
+    </div>
+    `,
+    `
+    <div class="synth">
+      <h3>Eurorack</h3>
+      <pre>
+  ┌───┐┌───┐┌───┐┌───┐┌───┐
+  │ o ││ o ││ o ││ o ││ o │
+  │ o ││ o ││ o ││ o ││ o │
+  │ o ││ o ││ o ││ o ││ o │
+  │ o ││ o ││ o ││ o ││ o │
+  └───┘└───┘└───┘└───┘└───┘
+      </pre>
+    </div>
+    `
+  ];
+
+  const content = [
+    `<h2>Synth Patch of the Day:</h2>
+    ${synthVariations[0]}
+    <p>This monstrous analog beast is responsible for the ear-shattering leads in our latest single "Oscillator Obliteration".</p>`,
+    `<h2>Modular Mayhem:</h2>
+    ${synthVariations[1]}
+    <p>Void's latest bass tone comes from this chaotic patch. Good luck recreating it!</p>`,
+    `<h2>Digital Destruction:</h2>
+    ${synthVariations[2]}
+    <p>Xero's vocals are processed through this unholy digital synth for maximum glitch factor.</p>`,
+    `<h2>Eurorack Insanity:</h2>
+    ${synthVariations[3]}
+    <p>Glitch's drum sounds are sculpted using this ever-evolving Eurorack setup. It's different for every show!</p>`,
+  ];
+
+  let contentIndex = 0;
+
+  function loadMoreContent() {
+    infiniteContent.innerHTML += content[contentIndex % content.length];
+    contentIndex++;
+  }
+
+  scrollContainer.addEventListener('scroll', () => {
+    if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight - 20) {
+      loadMoreContent();
+    }
+  });
+
+  // Initial load
+  for (let i = 0; i < 3; i++) {
+    loadMoreContent();
+  }
+</script>
+</body></html>

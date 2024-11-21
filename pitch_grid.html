@@ -1,0 +1,150 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/synth-dimension">
+  <title>Behringer Escape Plan - Synth Dimension</title>
+  <style>
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      perspective: 1000px;
+    }
+    #synth-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      width: 100vw;
+      height: 100vh;
+      transform-style: preserve-3d;
+      animation: rotate 60s infinite linear;
+    }
+    .synth-key {
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid #0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      transform-style: preserve-3d;
+    }
+    .synth-key:hover {
+      background: rgba(0, 255, 0, 0.5);
+      transform: translateZ(20px);
+    }
+    @keyframes rotate {
+      0% { transform: rotateX(0deg) rotateY(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 255, 0, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 255, 0, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    a { color: #0f0; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    select, button {
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 5px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="synth-grid"></div>
+
+  <div id="controls">
+    <form method="GET" action="/synth-settings">
+      <select name="waveform" id="waveform">
+        <option value="sine">Sine</option>
+        <option value="square">Square</option>
+        <option value="sawtooth">Sawtooth</option>
+        <option value="triangle">Triangle</option>
+      </select>
+      <select name="octave" id="octave">
+        <option value="2">Octave 2</option>
+        <option value="3">Octave 3</option>
+        <option value="4" selected>Octave 4</option>
+        <option value="5">Octave 5</option>
+        <option value="6">Octave 6</option>
+      </select>
+      <button type="submit">Apply Settings</button>
+    </form>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/audio-nexus">Next: Audio Nexus →</a>
+  </div>
+
+  <script>
+    const synthGrid = document.getElementById('synth-grid');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    let currentOscillator = null;
+
+    function createSynthKeys() {
+      for (let i = 0; i < 64; i++) {
+        const key = document.createElement('div');
+        key.classList.add('synth-key');
+        key.textContent = notes[i % 12];
+        key.dataset.note = i;
+        key.style.transform = `translateZ(${Math.random() * 100}px)`;
+        key.addEventListener('mousedown', playNote);
+        key.addEventListener('mouseup', stopNote);
+        key.addEventListener('mouseleave', stopNote);
+        synthGrid.appendChild(key);
+      }
+    }
+
+    function playNote(event) {
+      const note = event.target.dataset.note;
+      const frequency = 440 * Math.pow(2, (note - 69) / 12);
+      
+      if (currentOscillator) {
+        currentOscillator.stop();
+      }
+      
+      currentOscillator = audioContext.createOscillator();
+      currentOscillator.type = document.getElementById('waveform').value;
+      currentOscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+      
+      const gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+      
+      currentOscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      currentOscillator.start();
+      event.target.style.backgroundColor = 'rgba(0, 255, 0, 0.8)';
+    }
+
+    function stopNote(event) {
+      if (currentOscillator) {
+        currentOscillator.stop();
+        currentOscillator = null;
+      }
+      event.target.style.backgroundColor = '';
+    }
+
+    createSynthKeys();
+  </script>
+</body></html>

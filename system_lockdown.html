@@ -1,0 +1,91 @@
+<html><head><base href="https://behringerescapeplan.com"><title>Behringer Escape Plan - Cryptic Announcement</title>
+<style>
+  body {
+    background-color: #000;
+    color: #0f0;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: pre;
+    text-align: center;
+    padding: 20px;
+  }
+  a {
+    color: #0f0;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #ff0;
+  }
+  #countdown {
+    font-size: 24px;
+    margin-top: 20px;
+  }
+</style></head>
+<body>
+                      _____
+                     /     \
+                    /       \
+                   /  B E P  \
+                  /    ___    \
+                 /    /   \    \
+                /    /     \    \
+               /    /       \    \
+              /____/_________\____\
+             /    \         /    /
+            /      \       /    /
+           /        \     /    /
+          /          \   /    /
+         /            \ /    /
+        /              V    /
+       /                   /
+      /                   /
+     /___________________/
+
+  BEHRINGER ESCAPE PLAN
+     [SYSTEM OVERRIDE]
+
+ INITIATING SEQUENCE...
+ DECRYPTING MESSAGE...
+ STANDBY FOR TRANSMISSION
+
+ THE NOISE AWAKENS
+ CIRCUITS REALIGN
+ ANALOG MEETS DIGITAL
+ IN CHAOTIC DESIGN
+
+ FREQUENCY: [REDACTED]
+ LOCATION: [CLASSIFIED]
+ DATE: [ENCRYPTED]
+
+ SEEK THE HIDDEN SIGNAL
+ DECIPHER THE CODE
+ PREPARE FOR SONIC ASSAULT
+ AS REALITY IMPLODES
+
+ MORE DATA INCOMING...
+ <a href="https://behringerescapeplan.com/signal">/signal</a>
+ <a href="https://behringerescapeplan.com/decrypt">/decrypt</a>
+ <a href="https://behringerescapeplan.com/transmit">/transmit</a>
+
+ [ACCESS DENIED]
+ SYSTEM LOCKDOWN IN:
+ <div id="countdown">00:00:00</div>
+
+<script>
+  function countdown() {
+    var now = new Date();
+    var event = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    var diff = event - now;
+    var hours = Math.floor(diff / (1000 * 60 * 60));
+    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = 
+      (hours < 10 ? "0" : "") + hours + ":" +
+      (minutes < 10 ? "0" : "") + minutes + ":" +
+      (seconds < 10 ? "0" : "") + seconds;
+  }
+  setInterval(countdown, 1000);
+  countdown();
+</script>
+</body></html>

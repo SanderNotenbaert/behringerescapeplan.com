@@ -1,0 +1,133 @@
+<html><head><base href="https://behringerescapeplan.com/signals/spectrogram">
+<title>Behringer Escape Plan - Signal Spectrogram</title>
+<style>
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+canvas {
+  border: 1px solid #00ff00;
+}
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+button {
+  background: #003300;
+  border: none;
+  color: #00ff00;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.message {
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<h1>Signal Spectrogram</h1>
+
+<canvas id="spectrogram" width="800" height="400"></canvas>
+
+<div class="controls">
+  <button onclick="zoomIn()">Zoom In</button>
+  <button onclick="zoomOut()">Zoom Out</button>
+  <button onclick="shiftLeft()">Shift Left</button>
+  <button onclick="shiftRight()">Shift Right</button>
+</div>
+
+<div class="message">
+  Analyzing spectrogram... Hidden patterns detected.
+</div>
+
+<script>
+const canvas = document.getElementById('spectrogram');
+const ctx = canvas.getContext('2d');
+
+let zoomLevel = 1;
+let xOffset = 0;
+
+function drawSpectrogram() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw time axis
+  ctx.fillStyle = '#00ff00';
+  ctx.fillRect(0, canvas.height - 20, canvas.width, 1);
+  
+  // Draw frequency axis
+  ctx.fillRect(0, 0, 1, canvas.height - 20);
+  
+  // Generate pseudo-random spectrogram data
+  for (let x = 0; x < canvas.width; x++) {
+    for (let y = 0; y < canvas.height - 20; y++) {
+      let intensity = noise(x / 20 + xOffset, y / 20) * 255;
+      ctx.fillStyle = `rgb(0, ${intensity}, 0)`;
+      ctx.fillRect(x, canvas.height - 20 - y, 1, 1);
+    }
+  }
+  
+  // Draw hidden message
+  ctx.font = '20px monospace';
+  ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+  ctx.fillText('BEHRINGER', 100, 200);
+  ctx.fillText('ESCAPE', 300, 150);
+  ctx.fillText('PLAN', 500, 250);
+}
+
+// Simple noise function for demonstration
+function noise(x, y) {
+  let n = x + y * 57;
+  n = (n<<13) ^ n;
+  return ( 1.0 - ( (n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
+}
+
+function zoomIn() {
+  zoomLevel *= 1.2;
+  drawSpectrogram();
+}
+
+function zoomOut() {
+  zoomLevel /= 1.2;
+  drawSpectrogram();
+}
+
+function shiftLeft() {
+  xOffset -= 5 / zoomLevel;
+  drawSpectrogram();
+}
+
+function shiftRight() {
+  xOffset += 5 / zoomLevel;
+  drawSpectrogram();
+}
+
+drawSpectrogram();
+
+// Easter egg: Reveal hidden message on specific interaction
+let clickCount = 0;
+canvas.addEventListener('click', function(e) {
+  clickCount++;
+  if (clickCount === 3) {
+    const message = document.querySelector('.message');
+    message.textContent = 'HIDDEN MESSAGE REVEALED: The frequencies align. Behringer will be escaped.';
+    message.style.color = '#ff0000';
+  }
+});
+</script>
+
+<footer>
+  <p><a href="https://behringerescapeplan.com/">Back to Main</a> | <a href="https://behringerescapeplan.com/signals">All Signals</a> | <a href="https://behringerescapeplan.com/manifesto">Manifesto</a></p>
+</footer>
+
+</body></html>

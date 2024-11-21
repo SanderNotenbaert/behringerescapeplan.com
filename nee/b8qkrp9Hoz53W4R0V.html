@@ -1,0 +1,271 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/temporal-looper">
+  <title>Behringer Escape Plan - Temporal Looper</title>
+  <style>
+    body {
+      background: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #temporal-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #timeline {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 20px;
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid #00ff00;
+    }
+    #playhead {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background: #00ff00;
+    }
+    #controls {
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+    #info-panel {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 255, 0, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 255, 0, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a { color: #00ff00; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: #00ff00;
+      color: #000;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="temporal-canvas"></canvas>
+  
+  <div id="timeline">
+    <div id="playhead"></div>
+  </div>
+  
+  <div id="controls">
+    <form method="GET" action="/temporal-control">
+      <button type="submit" name="action" value="record">Record Loop</button>
+      <button type="submit" name="action" value="play">Play</button>
+      <button type="submit" name="action" value="reverse">Reverse Time</button>
+      <button type="submit" name="action" value="paradox">Create Paradox</button>
+    </form>
+  </div>
+  
+  <div id="info-panel">
+    <h2>Temporal Looper</h2>
+    <p>Time Flow: <span id="time-flow">Forward</span></p>
+    <p>Loop Length: <span id="loop-length">0s</span></p>
+    <p>Paradox Level: <span id="paradox-level">0%</span></p>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/fractal-synthesizer">Next: Fractal Synthesizer →</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('temporal-canvas');
+    const ctx = canvas.getContext('2d');
+    const playhead = document.getElementById('playhead');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    let timeFlow = 1;
+    let loopLength = 0;
+    let paradoxLevel = 0;
+    let isRecording = false;
+    let isPlaying = false;
+    let temporalParticles = [];
+    let recordedAudio = null;
+    let sourceNode = null;
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    function createTemporalParticle(x, y) {
+      return {
+        x,
+        y,
+        size: Math.random() * 3 + 1,
+        speedX: (Math.random() - 0.5) * 2,
+        speedY: (Math.random() - 0.5) * 2,
+        hue: Math.random() * 60 + 100, // Green to blue hues
+      };
+    }
+    
+    function updateParticles() {
+      temporalParticles.forEach(particle => {
+        particle.x += particle.speedX * timeFlow;
+        particle.y += particle.speedY * timeFlow;
+        
+        if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+      });
+    }
+    
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      temporalParticles.forEach(particle => {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${particle.hue}, 100%, 50%)`;
+        ctx.fill();
+      });
+    }
+    
+    function animate() {
+      updateParticles();
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+    
+    for (let i = 0; i < 100; i++) {
+      temporalParticles.push(createTemporalParticle(Math.random() * canvas.width, Math.random() * canvas.height));
+    }
+    
+    animate();
+    
+    function updatePlayhead() {
+      const progress = (audioContext.currentTime % loopLength) / loopLength;
+      playhead.style.left = `${progress * 100}%`;
+      requestAnimationFrame(updatePlayhead);
+    }
+    
+    function recordLoop() {
+      if (isRecording) return;
+      isRecording = true;
+      const startTime = audioContext.currentTime;
+      
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          const mediaRecorder = new MediaRecorder(stream);
+          const audioChunks = [];
+          
+          mediaRecorder.addEventListener("dataavailable", event => {
+            audioChunks.push(event.data);
+          });
+          
+          mediaRecorder.addEventListener("stop", () => {
+            const audioBlob = new Blob(audioChunks);
+            const audioUrl = URL.createObjectURL(audioBlob);
+            recordedAudio = new Audio(audioUrl);
+            loopLength = audioContext.currentTime - startTime;
+            updateLoopLength();
+          });
+          
+          mediaRecorder.start();
+          setTimeout(() => {
+            mediaRecorder.stop();
+            isRecording = false;
+          }, 5000); // Record for 5 seconds
+        });
+    }
+    
+    function playLoop() {
+      if (!recordedAudio || isPlaying) return;
+      isPlaying = true;
+      
+      sourceNode = audioContext.createMediaElementSource(recordedAudio);
+      sourceNode.connect(audioContext.destination);
+      recordedAudio.loop = true;
+      recordedAudio.playbackRate = timeFlow;
+      recordedAudio.play();
+      
+      updatePlayhead();
+    }
+    
+    function reverseTime() {
+      timeFlow *= -1;
+      if (recordedAudio) {
+        recordedAudio.playbackRate = timeFlow;
+      }
+      updateTimeFlow();
+    }
+    
+    function createParadox() {
+      paradoxLevel = Math.min(paradoxLevel + 10, 100);
+      updateParadoxLevel();
+      
+      // Visual paradox effect
+      for (let i = 0; i < 20; i++) {
+        temporalParticles.push(createTemporalParticle(Math.random() * canvas.width, Math.random() * canvas.height));
+      }
+      
+      // Audio paradox effect
+      if (sourceNode) {
+        const paradoxGain = audioContext.createGain();
+        paradoxGain.gain.setValueAtTime(paradoxLevel / 100, audioContext.currentTime);
+        
+        const paradoxDelay = audioContext.createDelay(1);
+        paradoxDelay.delayTime.setValueAtTime(0.1, audioContext.currentTime);
+        
+        sourceNode.disconnect();
+        sourceNode.connect(paradoxGain);
+        paradoxGain.connect(paradoxDelay);
+        paradoxDelay.connect(audioContext.destination);
+      }
+    }
+    
+    function updateTimeFlow() {
+      document.getElementById('time-flow').textContent = timeFlow > 0 ? 'Forward' : 'Backward';
+    }
+    
+    function updateLoopLength() {
+      document.getElementById('loop-length').textContent = `${loopLength.toFixed(2)}s`;
+    }
+    
+    function updateParadoxLevel() {
+      document.getElementById('paradox-level').textContent = `${paradoxLevel}%`;
+    }
+    
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      switch(e.submitter.value) {
+        case 'record':
+          recordLoop();
+          break;
+        case 'play':
+          playLoop();
+          break;
+        case 'reverse':
+          reverseTime();
+          break;
+        case 'paradox':
+          createParadox();
+          break;
+      }
+    });
+  </script>
+</body></html>

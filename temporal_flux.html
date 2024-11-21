@@ -1,0 +1,278 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/temporal-looper">
+  <title>Behringer Escape Plan - Temporal Looper</title>
+  <style>
+    body {
+      background: #000;
+      color: #00ffff;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #temporal-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #timeline {
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 20px;
+      background: rgba(0, 255, 255, 0.2);
+      border-radius: 10px;
+    }
+    #timeline-marker {
+      width: 10px;
+      height: 30px;
+      background: #00ffff;
+      position: absolute;
+      top: -5px;
+      left: 0;
+      border-radius: 5px;
+      transition: left 0.1s linear;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a { color: #00ffff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: #00ffff;
+      color: #000;
+      border: none;
+      padding: 5px 10px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    #temporal-info {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="temporal-canvas"></canvas>
+
+  <div id="timeline">
+    <div id="timeline-marker"></div>
+  </div>
+
+  <div id="temporal-info">
+    <p>Temporal Flux: <span id="flux">0%</span></p>
+    <p>Loop Duration: <span id="duration">4s</span></p>
+    <p>Quantum Stability: <span id="stability">Stable</span></p>
+  </div>
+
+  <div id="controls">
+    <form method="GET" action="/manipulate-time">
+      <button type="submit" name="action" value="record">Record Loop</button>
+      <button type="submit" name="action" value="play">Play Loop</button>
+      <button type="submit" name="action" value="reverse">Reverse Time</button>
+      <button type="submit" name="action" value="flux">Induce Flux</button>
+    </form>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/harmonic-convergence">Next: Harmonic Convergence →</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('temporal-canvas');
+    const ctx = canvas.getContext('2d');
+    const timeline = document.getElementById('timeline');
+    const timelineMarker = document.getElementById('timeline-marker');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    let temporalLoop = [];
+    let isRecording = false;
+    let isPlaying = false;
+    let isReversed = false;
+    let temporalFlux = 0;
+    let loopDuration = 4; // in seconds
+    let startTime;
+    let particleSystem = [];
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function createParticle(x, y) {
+      return {
+        x: x,
+        y: y,
+        vx: Math.random() * 2 - 1,
+        vy: Math.random() * 2 - 1,
+        radius: Math.random() * 3 + 1,
+        color: `rgb(0, ${Math.floor(Math.random() * 155 + 100)}, ${Math.floor(Math.random() * 155 + 100)})`
+      };
+    }
+
+    function updateParticles() {
+      particleSystem.forEach(particle => {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particleSystem.forEach(particle => {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = particle.color;
+        ctx.fill();
+      });
+    }
+
+    function animate() {
+      updateParticles();
+      drawParticles();
+      requestAnimationFrame(animate);
+    }
+
+    for (let i = 0; i < 100; i++) {
+      particleSystem.push(createParticle(Math.random() * canvas.width, Math.random() * canvas.height));
+    }
+
+    animate();
+
+    function startRecording() {
+      temporalLoop = [];
+      isRecording = true;
+      startTime = audioContext.currentTime;
+    }
+
+    function stopRecording() {
+      isRecording = false;
+    }
+
+    function playLoop() {
+      isPlaying = true;
+      startTime = audioContext.currentTime;
+      playbackLoop();
+    }
+
+    function stopLoop() {
+      isPlaying = false;
+    }
+
+    function reverseTime() {
+      isReversed = !isReversed;
+      temporalLoop.reverse();
+    }
+
+    function induceFlux() {
+      temporalFlux = (temporalFlux + 25) % 100;
+      updateFluxDisplay();
+      if (temporalFlux >= 75) {
+        document.getElementById('stability').textContent = 'Unstable';
+      } else {
+        document.getElementById('stability').textContent = 'Stable';
+      }
+    }
+
+    function updateFluxDisplay() {
+      document.getElementById('flux').textContent = `${temporalFlux}%`;
+    }
+
+    function playbackLoop() {
+      if (!isPlaying) return;
+
+      const currentTime = (audioContext.currentTime - startTime) % loopDuration;
+      const normalizedTime = currentTime / loopDuration;
+
+      timelineMarker.style.left = `${normalizedTime * 100}%`;
+
+      const index = Math.floor(normalizedTime * temporalLoop.length);
+      if (temporalLoop[index]) {
+        const { frequency, gain } = temporalLoop[index];
+        playNote(frequency, gain);
+      }
+
+      requestAnimationFrame(playbackLoop);
+    }
+
+    function playNote(frequency, gain) {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+      gainNode.gain.setValueAtTime(gain, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.5);
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (isRecording) {
+        const frequency = (e.clientY / canvas.height) * 1000 + 200;
+        const gain = e.clientX / canvas.width;
+        temporalLoop.push({ frequency, gain });
+        playNote(frequency, gain);
+      }
+    });
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      switch(e.submitter.value) {
+        case 'record':
+          if (isRecording) {
+            stopRecording();
+            e.submitter.textContent = 'Record Loop';
+          } else {
+            startRecording();
+            e.submitter.textContent = 'Stop Recording';
+          }
+          break;
+        case 'play':
+          if (isPlaying) {
+            stopLoop();
+            e.submitter.textContent = 'Play Loop';
+          } else {
+            playLoop();
+            e.submitter.textContent = 'Stop Loop';
+          }
+          break;
+        case 'reverse':
+          reverseTime();
+          break;
+        case 'flux':
+          induceFlux();
+          break;
+      }
+    });
+  </script>
+</body></html>

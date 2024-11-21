@@ -1,0 +1,188 @@
+<html><head><base href="https://behringerescapeplan.com/signals/oscilloscope">
+<title>Behringer Escape Plan - Oscilloscope</title>
+<style>
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.oscilloscope {
+  width: 600px;
+  height: 400px;
+  border: 2px solid #00ff00;
+  position: relative;
+  overflow: hidden;
+}
+.grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(to right, rgba(0,255,0,0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,255,0,0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+#waveform {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+.control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+input[type="range"] {
+  width: 150px;
+}
+.message {
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+.decrypt {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: #003300;
+  border: none;
+  color: #00ff00;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<h1>Signal Oscilloscope</h1>
+
+<div class="oscilloscope">
+  <div class="grid"></div>
+  <canvas id="waveform" width="600" height="400"></canvas>
+</div>
+
+<div class="controls">
+  <div class="control">
+    <label for="frequency">Frequency</label>
+    <input type="range" id="frequency" min="1" max="100" value="10">
+  </div>
+  <div class="control">
+    <label for="amplitude">Amplitude</label>
+    <input type="range" id="amplitude" min="1" max="100" value="50">
+  </div>
+  <div class="control">
+    <label for="phase">Phase</label>
+    <input type="range" id="phase" min="0" max="360" value="0">
+  </div>
+</div>
+
+<div class="message">
+  ENCRYPTED SIGNAL: Xlmw mw xli Filmriv Iwgeti Tper swgmppswgsti. Higshi xli wmkrep xs viziep xli xvyxl.
+</div>
+
+<button class="decrypt" onclick="decryptMessage()">Decrypt Message</button>
+
+<script>
+const canvas = document.getElementById('waveform');
+const ctx = canvas.getContext('2d');
+
+let frequency = 10;
+let amplitude = 50;
+let phase = 0;
+
+function drawWave() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.strokeStyle = '#00ff00';
+  ctx.lineWidth = 2;
+
+  for (let x = 0; x < canvas.width; x++) {
+    const y = amplitude * Math.sin((x / frequency) + (phase * Math.PI / 180)) + canvas.height / 2;
+    if (x === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+  }
+
+  ctx.stroke();
+
+  // Draw hidden message pattern
+  ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let x = 0; x < canvas.width; x += 20) {
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x + 10, canvas.height);
+  }
+  ctx.stroke();
+}
+
+document.getElementById('frequency').addEventListener('input', (e) => {
+  frequency = 101 - e.target.value; // Invert for more intuitive control
+  drawWave();
+});
+
+document.getElementById('amplitude').addEventListener('input', (e) => {
+  amplitude = e.target.value * 2;
+  drawWave();
+});
+
+document.getElementById('phase').addEventListener('input', (e) => {
+  phase = e.target.value;
+  drawWave();
+});
+
+function decryptMessage() {
+  const encoded = document.querySelector('.message').textContent.split(': ')[1];
+  const decoded = encoded.replace(/[a-zA-Z]/g, function(c) {
+    return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 4) ? c : c - 26);
+  });
+  document.querySelector('.message').innerHTML = 'DECODED MESSAGE: ' + decoded;
+}
+
+drawWave();
+
+// Add oscilloscope cursor effect
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawWave();
+
+  // Draw vertical cursor line
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+  ctx.moveTo(x, 0);
+  ctx.lineTo(x, canvas.height);
+  ctx.stroke();
+
+  // Draw horizontal cursor line
+  ctx.beginPath();
+  ctx.moveTo(0, y);
+  ctx.lineTo(canvas.width, y);
+  ctx.stroke();
+
+  // Display coordinates
+  ctx.fillStyle = '#00ff00';
+  ctx.font = '12px monospace';
+  ctx.fillText(`X: ${x.toFixed(2)}, Y: ${(canvas.height - y).toFixed(2)}`, 10, 20);
+});
+</script>
+
+<footer>
+  <p><a href="https://behringerescapeplan.com/">Back to Main</a> | <a href="https://behringerescapeplan.com/signals">All Signals</a> | <a href="https://behringerescapeplan.com/countdown">Countdown</a></p>
+</footer>
+
+</body></html>

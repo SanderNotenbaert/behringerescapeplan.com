@@ -1,0 +1,63 @@
+<html><head><base href="https://behringerescapeplan.com/"><style>body {background-color: #000; color: #0f0; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden;} pre {font-size: 10px; line-height: 10px; white-space: pre; text-align: center;} a {color: #0f0; text-decoration: none;} #countdown {font-size: 24px; margin-top: 20px;}</style></head><body><pre>
+                                  _____
+                           _.+-+-+|  |  +-+-+._
+                      _.--'  |   ||  |  ||   |  '--._
+                  .--'       |   ||  |  ||   |       '--.
+               .-'           |   ||  |  ||   |           '-.
+            .-'              |   ||  |  ||   |              '-.
+          .'                 |   ||  |  ||   |                 '.
+        .'                   |   ||  |  ||   |                   '.
+      .'                     |   ||  |  ||   |                     '.
+     /                       |   ||  |  ||   |                       \
+    /                        |   ||  |  ||   |                        \
+   /                         |   ||  |  ||   |                         \
+  /                          |   ||  |  ||   |                          \
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |             _____         |   ||  |  ||   |         _____             |
+ |            |     |        |   ||  |  ||   |        |     |            |
+ |            |     |        |   ||  |  ||   |        |     |            |
+ |            |     |        |   ||  |  ||   |        |     |            |
+ |            |     |        |   ||  |  ||   |        |     |            |
+ |            |_____|        |   ||  |  ||   |        |_____|            |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+ |         BEHRINGER         |   ||  |  ||   |         ESCAPE            |
+ |                           |   ||  |  ||   |                           |
+ |           PLAN            |   ||  |  ||   |          ROOM             |
+ |                           |   ||  |  ||   |                           |
+ |                           |   ||  |  ||   |                           |
+  \         SEQUENCE         |   ||  |  ||   |        INITIATED         /
+   \                         |   ||  |  ||   |                         /
+    \                        |   ||  |  ||   |                        /
+     \                       |   ||  |  ||   |                       /
+      '.                     |   ||  |  ||   |                     .'
+        '.                   |   ||  |  ||   |                   .'
+          '.                 |   ||  |  ||   |                 .'
+            '-._             |   ||  |  ||   |             _.-'
+                '-.._        |   ||  |  ||   |        _..-'
+                     ''--.._ |   ||  |  ||   | _..--''
+                            '|___||__|__||___|'
+</pre>
+<div id="countdown"></div>
+<script>
+let count = 1000;
+const countdownElement = document.getElementById('countdown');
+const updateCountdown = () => {
+    countdownElement.textContent = count.toString(16).toUpperCase().padStart(3, '0');
+    if (count > 0) {
+        count--;
+        setTimeout(updateCountdown, 1000);
+    } else {
+        window.location.href = 'https://behringerescapeplan.com/sequence';
+    }
+};
+updateCountdown();
+</script>
+</body></html>

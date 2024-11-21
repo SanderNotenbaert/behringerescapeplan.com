@@ -1,0 +1,290 @@
+<html>
+  <head>
+    <!-- <base -->
+    <!--   href="https://behringerescapeplan.com/ascii%20cryptic%20band%20landing%20page" -->
+    <!-- /> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behringer Escape Plan - Cryptic ASCII Realm</title>
+    <style>
+      body {
+        background-color: #000;
+        color: #0f0;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.2;
+        margin: 0;
+        padding: 20px;
+        overflow-x: hidden;
+      }
+      pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      a {
+        color: #0f0;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #ff00ff;
+        text-decoration: none;
+      }
+      .ascii-art {
+        font-size: 8px;
+        line-height: 1;
+      }
+      @media (max-width: 768px) {
+        .ascii-art {
+          font-size: 5px;
+        }
+      }
+      .glitch {
+        animation: glitch 1s linear infinite;
+        position: relative;
+      }
+      @keyframes glitch {
+        2%,
+        64% {
+          transform: translate(2px, 0) skew(0deg);
+        }
+        4%,
+        60% {
+          transform: translate(-2px, 0) skew(0deg);
+        }
+        62% {
+          transform: translate(0, 0) skew(5deg);
+        }
+      }
+      .glitch:before,
+      .glitch:after {
+        content: attr(title);
+        position: absolute;
+        left: 0;
+      }
+      .glitch:before {
+        animation: glitchTop 1s linear infinite;
+        clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+      }
+      @keyframes glitchTop {
+        2%,
+        64% {
+          transform: translate(2px, -2px);
+        }
+        4%,
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        62% {
+          transform: translate(13px, -1px) skew(-13deg);
+        }
+      }
+      .glitch:after {
+        animation: glitchBotom 1.5s linear infinite;
+        clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+      }
+      @keyframes glitchBotom {
+        2%,
+        64% {
+          transform: translate(-2px, 0);
+        }
+        4%,
+        60% {
+          transform: translate(-2px, 0);
+        }
+        62% {
+          transform: translate(-22px, 5px) skew(21deg);
+        }
+      }
+
+ol {
+    list-style-type: decimal inside;
+    padding-left: 0px; /* Reduced from previous suggestion */
+      margin: 0;
+    /* display: inline-flex; */
+}
+
+li {
+    display: inline-flex; /* Use flexbox to align items */
+    align-items: center; /* Vertically center items */
+    gap: 0px; /* Space between text and download button */
+    margin: 0;
+}
+
+    .track {
+      cursor: pointer;
+      text-decoration: none;
+      /* color: #000; */
+      margin-right: 10px;
+    }
+    .track:hover {
+      text-decoration: underline;
+    }
+    .download-icon {
+      margin-left: 0;
+      font-size: 1.2em;
+      /* margin-left: auto; */
+      /* color: #007BFF; */
+      display: inline-flex;
+      cursor: pointer;
+    }
+    .download-icon:hover {
+      /* color: #0056b3; */
+    }
+    audio {
+      display: none;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: #00ff00;
+      margin: 0;
+      padding: 0;
+    }
+    </style>
+  </head>
+  <body>
+    <pre class="ascii-art glitch" title="BEHRINGER ESCAPE PLAN">
+ ____  _____ _   _ ____ ___ _   _  ____ _____ ____  
+| __ )| ____| | | |  _ \_ _| \ | |/ ___| ____|  _ \ 
+|  _ \|  _| | |_| | |_) | ||  \| | |  _|  _| | |_) |
+| |_) | |___|  _  |  _ &lt; | || |\  | |_| | |___|  _ &lt; 
+|____/|_____|_| |_|_| \_\___|_| \_|\____|_____|_| \_\
+ _____ ____   ____    _    ____  _____   ____  _      _    _   _ 
+| ____/ ___| / ___|  / \  |  _ \| ____| |  _ \| |    / \  | \ | |
+|  _| \___ \| |     / _ \ | |_) |  _|   | |_) | |   / _ \ |  \| |
+| |___ ___) | |___ / ___ \|  __/| |___  |  __/| |__/ ___ \| |\  |
+|_____|____/ \____/_/   \_\_|   |_____| |_|   |_____/   \_\_| \_|
+</pre>
+
+    <h1>ENTER THE VOID</h1>
+
+    <p>Decipher the code. Unravel the soundscape. Escape reality.</p>
+
+    <h2>Cryptic Transmissions:</h2>
+    <pre>
+01010011 01001111 01001111 01001110
+01000011 01001111 01001101 01001001 01001110 01000111
+
+<pre>
+<h2>Patent Pending...</h2>
+Codename: "Ø¶Ç®É£É Ð¤ÆÆÉ®É³¢É"
+Tracks:
+ <ol>
+    <li>
+      <span class="track" data-src="assets/patent_pending/1. MS-1.mp3">MS-1</span>
+      <a href="assets/patent_pending/1. MS-1.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/2. Model D.mp3">Model D</span>
+      <a href="assets/patent_pending/2. Model D.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/Metal Zone.mp3">Metal Zone</span>
+      <a href="assets/patent_pending/Metal Zone.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/Diamond Dome DD610.mp3">Diamond Dome DD610</span>
+      <a href="assets/patent_pending/Diamond Dome DD610.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/Xenyx-802.mp3">Xenyx-802</span>
+      <a href="assets/patent_pending/Xenyx-802.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/NOX101.mp3">NOX101</span>
+      <a href="assets/patent_pending/NOX101.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/Flow 8.mp3">Flow 8</span>
+      <a href="assets/patent_pending/Flow 8.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/FBQ100.mp3">FBQ100</span>
+      <a href="assets/patent_pending/FBQ100.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+    <li>
+      <span class="track" data-src="assets/patent_pending/TD-3-MO-SR.mp3">TD-3-MO-SR</span>
+      <a href="assets/patent_pending/TD-3-MO-SR.mp3" download class="download-icon">
+<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#00ff00"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            </a>
+    </li>
+  </ol>
+  <audio id="audio-player" controls></audio>
+</pre>
+    <h2>Entities:</h2>
+    <pre>
+┌─────────────────────────────────┐
+│ ÆTHER - Voice of the Void       │
+│ CIPHER - Strings of Chaos       │
+│ NULL - Low Frequency Oscillator │
+│ GLITCH - Percussive Anomaly     │
+└─────────────────────────────────┘
+</pre
+    >
+
+    <h2>Access Points:</h2>
+    <pre>
+<a href="https://twitter.com/BEP_void">>_ twitter.com/BEP_void</a>
+<a href="https://www.youtube.com/BehringerEscapePlan">>_ youtube.com/BehringerEscapePlan</a>
+<a href="https://soundcloud.com/behringerescapeplan">>_ soundcloud.com/behringerescapeplan</a>
+<a href="mailto:behringerescapeplan@gmail.com">_ behringerescapeplan@gmail.com</a>
+</pre>
+
+    <h2>Hidden Message:</h2>
+    <pre>
+VGhlIGNvbmNlcnQgaXMgYSBzaW11bGF0aW9uLiBZb3UgYXJlIHRoZSBtdXNpYy4=
+</pre
+    >
+
+    <h2>Terminal Access:</h2>
+    <pre>
+$ ssh <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f98f96909db99b9c918b90979e9c8b9c8a9a98899c89959897d79a9694">[email&#160;protected]</a>
+Password: ••••••••••••
+Access Granted. Welcome to the Void.
+</pre>
+
+    <footer>
+      <pre>
+© 2023 Behringer Escape Plan | <a href="https://behringerescapeplan.com/privacy">Privacy</a> | <a href="https://behringerescapeplan.com/terms">Terms</a>
+Reality Distortion Field powered by Quantum Entanglement™
+</pre>
+    </footer>
+      
+  <script>
+    const audioPlayer = document.getElementById('audio-player');
+    const tracks = document.querySelectorAll('.track');
+
+    tracks.forEach(track => {
+      track.addEventListener('click', () => {
+        const src = track.getAttribute('data-src');
+        audioPlayer.src = src;
+        audioPlayer.play();
+      });
+    });
+  </script>
+
+    <!-- <script -->
+    <!--   data-cfasync="false" -->
+    <!--   src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" -->
+    <!-- ></script> -->
+  </body>
+</html>
+

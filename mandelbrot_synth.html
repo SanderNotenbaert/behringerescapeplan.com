@@ -1,0 +1,221 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/fractal-synthesizer">
+  <title>Behringer Escape Plan - Fractal Synthesizer</title>
+  <style>
+    body {
+      background: #000;
+      color: #00ffff;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #fractal-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #info-panel {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a { color: #00ffff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: #00ffff;
+      color: #000;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    input[type="range"] {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fractal-canvas"></canvas>
+  
+  <div id="controls">
+    <form method="GET" action="/fractal-control">
+      <button type="submit" name="action" value="generate">Generate Fractal</button>
+      <button type="submit" name="action" value="play">Play Synth</button>
+      <button type="submit" name="action" value="stop">Stop Synth</button>
+      <label>Complexity: <input type="range" name="complexity" min="1" max="10" value="5"></label>
+      <label>Harmony: <input type="range" name="harmony" min="1" max="10" value="5"></label>
+    </form>
+  </div>
+  
+  <div id="info-panel">
+    <h2>Fractal Synthesizer</h2>
+    <p>Fractal Type: <span id="fractal-type">Mandelbrot</span></p>
+    <p>Harmonic Depth: <span id="harmonic-depth">5</span></p>
+    <p>Resonance Factor: <span id="resonance-factor">1.0</span></p>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/quantum-modulation-matrix">Next: Quantum Modulation Matrix →</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('fractal-canvas');
+    const ctx = canvas.getContext('2d');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    let fractalType = 'Mandelbrot';
+    let harmonicDepth = 5;
+    let resonanceFactor = 1.0;
+    let isPlaying = false;
+    let oscillators = [];
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    function generateMandelbrot(maxIterations) {
+      const width = canvas.width;
+      const height = canvas.height;
+      const imageData = ctx.createImageData(width, height);
+      
+      for (let x = 0; x < width; x++) {
+        for (let y = 0; y < height; y++) {
+          let a = (x - width / 2) * 4 / width;
+          let b = (y - height / 2) * 4 / height;
+          let ca = a;
+          let cb = b;
+          let n = 0;
+          
+          while (n < maxIterations) {
+            let aa = a * a - b * b;
+            let bb = 2 * a * b;
+            a = aa + ca;
+            b = bb + cb;
+            if (a * a + b * b > 4) break;
+            n++;
+          }
+          
+          let bright = n === maxIterations ? 0 : 255 * Math.sqrt(n / maxIterations);
+          let pix = (x + y * width) * 4;
+          imageData.data[pix] = bright;
+          imageData.data[pix + 1] = bright;
+          imageData.data[pix + 2] = bright;
+          imageData.data[pix + 3] = 255;
+        }
+      }
+      
+      ctx.putImageData(imageData, 0, 0);
+    }
+    
+    function playSynth() {
+      if (isPlaying) return;
+      isPlaying = true;
+      
+      for (let i = 0; i < harmonicDepth; i++) {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(220 * Math.pow(2, i / 12), audioContext.currentTime);
+        
+        gainNode.gain.setValueAtTime(0.5 / harmonicDepth, audioContext.currentTime);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.start();
+        oscillators.push({ oscillator, gainNode });
+      }
+    }
+    
+    function stopSynth() {
+      if (!isPlaying) return;
+      isPlaying = false;
+      
+      oscillators.forEach(({ oscillator, gainNode }) => {
+        gainNode.gain.setValueAtTime(gainNode.gain.value, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+        oscillator.stop(audioContext.currentTime + 0.5);
+      });
+      
+      oscillators = [];
+    }
+    
+    function updateFractal(complexity) {
+      generateMandelbrot(complexity * 50);
+    }
+    
+    function updateHarmony(harmony) {
+      harmonicDepth = harmony;
+      document.getElementById('harmonic-depth').textContent = harmony;
+      
+      if (isPlaying) {
+        stopSynth();
+        playSynth();
+      }
+    }
+    
+    function updateResonance() {
+      resonanceFactor = 1 + Math.random() * 0.5;
+      document.getElementById('resonance-factor').textContent = resonanceFactor.toFixed(2);
+      
+      oscillators.forEach(({ oscillator }, index) => {
+        oscillator.frequency.setValueAtTime(
+          220 * Math.pow(2, index / 12) * resonanceFactor,
+          audioContext.currentTime
+        );
+      });
+    }
+    
+    // Initial fractal generation
+    updateFractal(5);
+    
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      switch(e.submitter.value) {
+        case 'generate':
+          updateFractal(parseInt(e.target.complexity.value));
+          break;
+        case 'play':
+          playSynth();
+          break;
+        case 'stop':
+          stopSynth();
+          break;
+      }
+    });
+    
+    document.querySelector('input[name="complexity"]').addEventListener('input', function(e) {
+      updateFractal(parseInt(e.target.value));
+    });
+    
+    document.querySelector('input[name="harmony"]').addEventListener('input', function(e) {
+      updateHarmony(parseInt(e.target.value));
+    });
+    
+    // Periodically update resonance for evolving sound
+    setInterval(updateResonance, 5000);
+  </script>
+</body></html>

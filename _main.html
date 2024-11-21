@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random HTML Loader</title>
+    <script>
+        function loadRandomHTML(folder) {
+            // List of HTML files in the folder
+            const htmlFiles = [
+                'ascii_animation.html',
+                'enlist.html',
+                'events.html',
+                'experiment.html',
+                'hints.html'
+            ];
+
+            // Select a random file from the list
+            const randomFile = htmlFiles[Math.floor(Math.random() * htmlFiles.length)];
+
+            // Load the random file using XMLHttpRequest
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        document.getElementById('content').innerHTML = xhr.responseText;
+                    } else {
+                        console.error('Error loading file:', xhr.status);
+                        document.getElementById('content').innerHTML = '<p>Error loading content.</p>';
+                    }
+                }
+            };
+            xhr.open('GET', `${folder}/${randomFile}`, true);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <h1>Random HTML Loader</h1>
+    <nav>
+        <a href="#" onclick="loadRandomHTML(''); return false;">Load from Folder 1</a>
+        <a href="#" onclick="loadRandomHTML(''); return false;">Load from Folder 2</a>
+    </nav>
+    <div id="content">
+        <p>Click a link above to load random content.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<html><head><base href="https://behringerescapeplan.com/multiverse/synth-singularity">
+  <title>Behringer Escape Plan - Synth Singularity</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #synth-universe {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      perspective: 1000px;
+    }
+    .synth-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      transform-style: preserve-3d;
+    }
+    #singularity {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff, #000);
+      transform: translate(-50%, -50%);
+      animation: pulse 4s infinite alternate;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 20px 10px rgba(255,255,255,0.5); }
+      100% { box-shadow: 0 0 40px 20px rgba(255,255,255,0.8); }
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #navigation {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    a { color: #fff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 5px 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    #synth-info {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 18px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="synth-universe">
+    <div id="singularity"></div>
+  </div>
+
+  <div id="synth-info">
+    <h2>Synth Singularity</h2>
+    <p>Current Harmonics: <span id="harmonic-count">0</span></p>
+    <p>Dimensional Resonance: <span id="resonance">Stable</span></p>
+  </div>
+
+  <div id="controls">
+    <form method="GET" action="/manipulate-singularity">
+      <button type="submit" name="action" value="add-harmonic">Add Harmonic</button>
+      <button type="submit" name="action" value="remove-harmonic">Remove Harmonic</button>
+      <button type="submit" name="action" value="resonate">Induce Resonance</button>
+    </form>
+  </div>
+
+  <div id="navigation">
+    <a href="https://behringerescapeplan.com/multiverse">← Back to Multiverse</a> |
+    <a href="https://behringerescapeplan.com/">Main Escape</a> |
+    <a href="https://behringerescapeplan.com/multiverse/temporal-looper">Next: Temporal Looper →</a>
+  </div>
+
+  <script>
+    const synthUniverse = document.getElementById('synth-universe');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const harmonics = [];
+    let harmonicCount = 0;
+    let resonanceState = 'Stable';
+
+    function createStar() {
+      const star = document.createElement('div');
+      star.classList.add('synth-star');
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.top = `${Math.random() * 100}vh`;
+      star.style.transform = `translateZ(${Math.random() * 1000 - 500}px)`;
+      synthUniverse.appendChild(star);
+    }
+
+    function createStarField() {
+      for (let i = 0; i < 200; i++) {
+        createStar();
+      }
+    }
+
+    function addHarmonic() {
+      if (harmonicCount >= 10) return;
+      
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(440 * Math.pow(2, harmonicCount / 12), audioContext.currentTime);
+      
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.1);
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.start();
+      harmonics.push({ oscillator, gainNode });
+      harmonicCount++;
+      updateHarmonicCount();
+    }
+
+    function removeHarmonic() {
+      if (harmonicCount <= 0) return;
+      
+      const harmonic = harmonics.pop();
+      harmonic.gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.1);
+      setTimeout(() => harmonic.oscillator.stop(), 100);
+      harmonicCount--;
+      updateHarmonicCount();
+    }
+
+    function induceResonance() {
+      harmonics.forEach(harmonic => {
+        const frequencyJitter = Math.random() * 10 - 5;
+        harmonic.oscillator.frequency.setValueAtTime(
+          harmonic.oscillator.frequency.value + frequencyJitter,
+          audioContext.currentTime
+        );
+        harmonic.gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.1);
+      });
+      resonanceState = resonanceState === 'Stable' ? 'Unstable' : 'Stable';
+      updateResonance();
+    }
+
+    function updateHarmonicCount() {
+      document.getElementById('harmonic-count').textContent = harmonicCount;
+    }
+
+    function updateResonance() {
+      document.getElementById('resonance').textContent = resonanceState;
+    }
+
+    createStarField();
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      switch(e.submitter.value) {
+        case 'add-harmonic':
+          addHarmonic();
+          break;
+        case 'remove-harmonic':
+          removeHarmonic();
+          break;
+        case 'resonate':
+          induceResonance();
+          break;
+      }
+    });
+
+    // Animate stars
+    function animateStars() {
+      const stars = document.querySelectorAll('.synth-star');
+      stars.forEach(star => {
+        const z = parseFloat(star.style.transform.match(/translateZ\((.*?)px\)/)[1]);
+        const newZ = z + 1;
+        if (newZ > 500) {
+          star.style.transform = `translateZ(-500px)`;
+        } else {
+          star.style.transform = `translateZ(${newZ}px)`;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+  </script>
+</body></html>

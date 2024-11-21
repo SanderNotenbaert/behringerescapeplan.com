@@ -1,0 +1,222 @@
+<html><head><base href="https://behringerescapeplan.com/signals/modular">
+<title>Behringer Escape Plan - Modular Signal Generator</title>
+<style>
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.modular-synth {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 800px;
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
+}
+.module {
+  background: #222;
+  border: 2px solid #00ff00;
+  border-radius: 5px;
+  padding: 10px;
+  width: 200px;
+}
+.module h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #00ff00;
+  padding-bottom: 5px;
+}
+.knob {
+  width: 60px;
+  height: 60px;
+  background: #000;
+  border: 2px solid #00ff00;
+  border-radius: 50%;
+  margin: 10px auto;
+  position: relative;
+  cursor: pointer;
+}
+.knob::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background: #00ff00;
+  transform-origin: bottom;
+}
+.jack {
+  width: 20px;
+  height: 20px;
+  background: #333;
+  border: 2px solid #00ff00;
+  border-radius: 50%;
+  margin: 5px;
+  display: inline-block;
+}
+.cable {
+  position: fixed;
+  background: #00ff00;
+  height: 2px;
+  pointer-events: none;
+  z-index: 100;
+}
+.output {
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+.decrypt {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: #003300;
+  border: none;
+  color: #00ff00;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<h1>Modular Signal Generator</h1>
+
+<div class="modular-synth">
+  <div class="module">
+    <h3>VCO</h3>
+    <div class="knob" data-param="frequency"></div>
+    <div class="jack" data-type="output"></div>
+  </div>
+  <div class="module">
+    <h3>LFO</h3>
+    <div class="knob" data-param="rate"></div>
+    <div class="jack" data-type="output"></div>
+  </div>
+  <div class="module">
+    <h3>VCF</h3>
+    <div class="knob" data-param="cutoff"></div>
+    <div class="jack" data-type="input"></div>
+    <div class="jack" data-type="output"></div>
+  </div>
+  <div class="module">
+    <h3>ADSR</h3>
+    <div class="knob" data-param="attack"></div>
+    <div class="knob" data-param="decay"></div>
+    <div class="jack" data-type="input"></div>
+    <div class="jack" data-type="output"></div>
+  </div>
+  <div class="module">
+    <h3>VCA</h3>
+    <div class="knob" data-param="gain"></div>
+    <div class="jack" data-type="input"></div>
+    <div class="jack" data-type="output"></div>
+  </div>
+</div>
+
+<div class="output">
+  ENCRYPTED SIGNAL: Ymtwofwgj Kspotk Rvmf of uzkfsqyafm. Yak ywfk oy pzgxafm.
+</div>
+
+<button class="decrypt" onclick="decryptSignal()">Decrypt Signal</button>
+
+<script>
+let activeCable = null;
+let moduleConnections = {};
+
+document.querySelectorAll('.knob').forEach(knob => {
+  knob.addEventListener('click', () => {
+    const rotation = Math.random() * 360;
+    knob.style.transform = `rotate(${rotation}deg)`;
+    knob.setAttribute('data-value', rotation);
+    updateSignal();
+  });
+});
+
+document.querySelectorAll('.jack').forEach(jack => {
+  jack.addEventListener('mousedown', (e) => {
+    if (activeCable) {
+      connectCable(activeCable, e.target);
+    } else {
+      startCable(e);
+    }
+  });
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (activeCable) {
+    updateCable(e);
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  if (activeCable) {
+    document.body.removeChild(activeCable);
+    activeCable = null;
+  }
+});
+
+function startCable(e) {
+  activeCable = document.createElement('div');
+  activeCable.className = 'cable';
+  activeCable.style.left = `${e.clientX}px`;
+  activeCable.style.top = `${e.clientY}px`;
+  document.body.appendChild(activeCable);
+}
+
+function updateCable(e) {
+  const cable = activeCable;
+  const x1 = parseInt(cable.style.left);
+  const y1 = parseInt(cable.style.top);
+  const x2 = e.clientX;
+  const y2 = e.clientY;
+
+  const length = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+  const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+  
+  cable.style.width = `${length}px`;
+  cable.style.transform = `rotate(${angle}deg)`;
+}
+
+function connectCable(cable, jack) {
+  const startJack = document.elementFromPoint(parseInt(cable.style.left), parseInt(cable.style.top));
+  const endJack = jack;
+
+  if (startJack.dataset.type === 'output' && endJack.dataset.type === 'input') {
+    const connection = `${startJack.parentElement.querySelector('h3').textContent} to ${endJack.parentElement.querySelector('h3').textContent}`;
+    moduleConnections[connection] = true;
+    updateSignal();
+  }
+
+  document.body.removeChild(cable);
+  activeCable = null;
+}
+
+function updateSignal() {
+  const connections = Object.keys(moduleConnections).join(', ');
+  const knobValues = Array.from(document.querySelectorAll('.knob'))
+    .map(knob => `${knob.dataset.param}: ${knob.dataset.value || 0}`)
+    .join(', ');
+  console.log(`Connections: ${connections}\nKnob values: ${knobValues}`);
+}
+
+function decryptSignal() {
+  const encrypted = document.querySelector('.output').textContent.split(': ')[1];
+  const decrypted = encrypted.replace(/[a-zA-Z]/g, function(c){
+    return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+  });
+  document.querySelector('.output').innerHTML = 'DECRYPTED SIGNAL: ' + decrypted;
+}
+</script>
+
+<footer>
+  <p><a href="https://behringerescapeplan.com/">Back to Main</a> | <a href="https://behringerescapeplan.com/signals">All Signals</a> | <a href="https://behringerescapeplan.com/manifesto">Manifesto</a></p>
+</footer>
+
+</body></html>
