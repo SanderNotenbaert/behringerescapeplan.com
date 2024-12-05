@@ -108,6 +108,16 @@
       gap: 0px; /* Space between text and download button */
       margin: 0;
   }
+  /* Highlight the currently playing track */
+  li.playing .track {
+    color: #ff00ff;
+    /* font-weight: bold; */
+  }
+  /* Highlight the download icon of the currently playing track */
+  li.playing svg {
+    fill: #ff00ff;
+  }
+
 
       .track {
         cursor: pointer;
@@ -410,14 +420,40 @@ Reality Distortion Field powered by Quantum Entanglement™
   <script>
     const audioPlayer = document.getElementById('audio-player');
     const tracks = document.querySelectorAll('.track');
+    const listItems = document.querySelectorAll('ol > li');
 
-    tracks.forEach(track => {
-      track.addEventListener('click', () => {
-        const src = track.getAttribute('data-src');
+    let currentIndex = 0; // Track the current playing index
+
+    function playTrack(index) {
+      if (index >= 0 && index < tracks.length) {
+        // Remove 'playing' class from all list items
+        listItems.forEach(item => item.classList.remove('playing'));
+
+        // Set the current playing index and add 'playing' class
+        currentIndex = index;
+        listItems[currentIndex].classList.add('playing');
+
+        // Play the selected track
+        const src = tracks[index].getAttribute('data-src');
         audioPlayer.src = src;
         audioPlayer.play();
-      });
+      }
+    }
+
+    // Add click event listeners to tracks
+    tracks.forEach((track, index) => {
+      track.addEventListener('click', () => playTrack(index));
     });
+
+    // Play the next track when the current one ends
+    audioPlayer.addEventListener('ended', () => {
+      const nextIndex = currentIndex + 1;
+      console.log('audiowaves delimited, rebooting:', nextIndex);
+      if (nextIndex < tracks.length) {
+        playTrack(nextIndex);
+      }
+    });
+
   </script>
 
   </body>
