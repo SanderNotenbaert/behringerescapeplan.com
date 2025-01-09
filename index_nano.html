@@ -1,3 +1,4 @@
+
 <html>
   <head>
     <meta charset="UTF-8">
@@ -410,55 +411,7 @@ Password: ••••••••••••
 Access Granted. Welcome to the Void.
 </pre>
 
-    <footer>
-      <pre>
-© 2024 Behringer Escape Plan | <a href="https://behringerescapeplan.com/privacy">Privacy</a> | <a href="https://behringerescapeplan.com/terms">Terms</a>
-Reality Distortion Field powered by Quantum Entanglement™
-</pre>
-    </footer>
-      
-  <script>
-    const audioPlayer = document.getElementById('audio-player');
-    const tracks = document.querySelectorAll('.track');
-    const listItems = document.querySelectorAll('ol > li');
-
-    let currentIndex = 0; // Track the current playing index
-
-    function playTrack(index) {
-      if (index >= 0 && index < tracks.length) {
-        // Remove 'playing' class from all list items
-        listItems.forEach(item => item.classList.remove('playing'));
-
-        // Set the current playing index and add 'playing' class
-        currentIndex = index;
-        listItems[currentIndex].classList.add('playing');
-
-        // Play the selected track
-        const src = tracks[index].getAttribute('data-src');
-        audioPlayer.src = src;
-        audioPlayer.play();
-      }
-    }
-
-    // Add click event listeners to tracks
-    tracks.forEach((track, index) => {
-      track.addEventListener('click', () => playTrack(index));
-    });
-
-    // Play the next track when the current one ends
-    audioPlayer.addEventListener('ended', () => {
-      const nextIndex = currentIndex + 1;
-      console.log('audiowaves delimited, rebooting:', nextIndex);
-      if (nextIndex < tracks.length) {
-        playTrack(nextIndex);
-      }
-    });
-
-  </script>
-
-  <!-- nano section -->
-
-  <section>
+<section>
     <h2>Support the Void:</h2>
     <pre>
   ┌─────────────────────────────────┐
@@ -507,7 +460,7 @@ Reality Distortion Field powered by Quantum Entanglement™
       #qrcode {
         margin: 10px 0;
         padding: 10px;
-        /* background: #fff; */
+        background: #fff;
         display: inline-block;
       }
   
@@ -546,19 +499,16 @@ Reality Distortion Field powered by Quantum Entanglement™
     const label = 'BehringerEscapePlan';
     
     // Create the payment URI (needs RAW)
-    const nanoUri = `nano:${nanoAddress}?amount=${defaultAmountNano}&label=${encodeURIComponent(label)}`;
+    const nanoUri = `nano:${nanoAddress}?amount=${defaultAmountRaw}&label=${encodeURIComponent(label)}`;
     
     // Create the Nault URL (needs NANO units)
     const naultUrl = `https://nault.cc/send?to=${nanoAddress}&amount=${defaultAmountNano}`;
     
-    console.log(nanoUri);
     // Generate QR code with the payment URI
     new QRCode(document.getElementById("qrcode"), {
       text: nanoUri,
       width: 128,
-      height: 128,
-      colorDark: "#000",
-      colorLight: "#0f0",
+      height: 128
     });
     
     // Function to open the payment URI
@@ -576,6 +526,53 @@ Reality Distortion Field powered by Quantum Entanglement™
   </script>
   </pre>
   </section>
+
+    <footer>
+      <pre>
+© 2024 Behringer Escape Plan | <a href="https://behringerescapeplan.com/privacy">Privacy</a> | <a href="https://behringerescapeplan.com/terms">Terms</a>
+Reality Distortion Field powered by Quantum Entanglement™
+</pre>
+    </footer>
+      
+  <script>
+    const audioPlayer = document.getElementById('audio-player');
+    const tracks = document.querySelectorAll('.track');
+    const listItems = document.querySelectorAll('ol > li');
+
+    let currentIndex = 0; // Track the current playing index
+
+    function playTrack(index) {
+      if (index >= 0 && index < tracks.length) {
+        // Remove 'playing' class from all list items
+        listItems.forEach(item => item.classList.remove('playing'));
+
+        // Set the current playing index and add 'playing' class
+        currentIndex = index;
+        listItems[currentIndex].classList.add('playing');
+
+        // Play the selected track
+        const src = tracks[index].getAttribute('data-src');
+        audioPlayer.src = src;
+        audioPlayer.play();
+      }
+    }
+
+    // Add click event listeners to tracks
+    tracks.forEach((track, index) => {
+      track.addEventListener('click', () => playTrack(index));
+    });
+
+    // Play the next track when the current one ends
+    audioPlayer.addEventListener('ended', () => {
+      const nextIndex = currentIndex + 1;
+      console.log('audiowaves delimited, rebooting:', nextIndex);
+      if (nextIndex < tracks.length) {
+        playTrack(nextIndex);
+      }
+    });
+
+  </script>
+
   </body>
 </html>
 
