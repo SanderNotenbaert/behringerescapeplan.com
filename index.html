@@ -462,10 +462,10 @@ Tracks:
     </style>
     <div class="support-text">>_ Support our exploration of the void:</div>
     <div class="button-container">
-      <a href="#" class="nano-button" onclick="openNanoPayment()">
+      <a class="nano-button" onclick="openNanoPayment()">
         Send XNO
       </a>
-      <a href="#" class="nano-button" onclick="openNault()">
+      <a class="nano-button" onclick="openNault()">
         Via Nault
       </a>
     </div>
@@ -482,9 +482,6 @@ Tracks:
     
     // Set default amount (in NANO)
     const defaultAmountNano = '5';
-    
-    // Convert to RAW for the URI (1 NANO = 10^30 RAW)
-    const defaultAmountRaw = (parseFloat(defaultAmountNano) * Math.pow(10, 30)).toString();
     
     // Optional: Set a label for the payment
     const label = 'BehringerEscapePlan';
